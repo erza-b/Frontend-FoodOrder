@@ -1,5 +1,6 @@
 import React from 'react'
 import "./Home.css"
+import MultiItemCarousel from './MultiItemCarousel'
 
 const Home = () => {
   return (
@@ -19,6 +20,9 @@ const Home = () => {
 
             </div>
 
+        </section>
+        <section>
+          <MultiItemCarousel/>
         </section>
         </div>
   )
