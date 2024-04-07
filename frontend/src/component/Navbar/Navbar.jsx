@@ -5,6 +5,7 @@ import { Avatar } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { Badge } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import "./Navbar.css"
 
 
 export const Navbar = () => {
