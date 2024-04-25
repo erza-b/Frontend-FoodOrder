@@ -1,10 +1,13 @@
 import React from 'react'
 import "./Home.css"
 import MultiItemCarousel from './MultiItemCarousel'
+import RestaurantCard from '../Restaurant/RestaurantCard'
+
+const restaurant=[1,1,1,1,1,1,1,1]
 
 const Home = () => {
   return (
-    <div className=''>
+    <div className='pb-10'>
         <section className='banner -z-50 relative flex flex-col justify-center
         items-center'>
 
@@ -24,6 +27,16 @@ const Home = () => {
         <section className='p-10 lg:py-10 lg:px-20'>
           <p className='text-2xl font-semibold text-gray-400 py-3 pb-10'>Top Meels</p>
           <MultiItemCarousel/>
+        </section>
+        <section className='px-5 lg:px-20 pt-10'>
+          <h1 className='text-2xl font-semibold text-gray-400 pb-5'>Order From Our Handpicked Favorites</h1>
+          <div className='flex flex-wrap items-center justify-around gap-5'>
+
+            {
+              restaurant.map((item)=><RestaurantCard/>)
+            }
+
+          </div>
         </section>
         </div>
   )
