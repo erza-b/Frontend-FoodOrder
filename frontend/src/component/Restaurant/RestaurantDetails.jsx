@@ -5,6 +5,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 import { Divider, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import MenuCard from './MenuCard';
 
 const categories=[
     "pizza",
@@ -20,6 +21,9 @@ const foodTypes=[
     {label:"Seasonal",value:"seasonal"},
 
 ];
+
+const menu=[1,1,1,1,1,1];
+
 const RestaurantDetails=()=>{
     const[foodType,setFoodType]=useState("all")
     const handleFilter=(e)=>{
@@ -128,7 +132,9 @@ const RestaurantDetails=()=>{
 
                 </div>
 
-                <div className="space-y-5 lg:w-[80%] lg:pl-10">menu   </div>
+                <div className="space-y-5 lg:w-[80%] lg:pl-10">
+                    {menu.map((item)=> <MenuCard/>)}
+                      </div>
 
             </section>
         </div>
