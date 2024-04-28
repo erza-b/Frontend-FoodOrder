@@ -1,9 +1,17 @@
 import React from 'react'
 import { CartItem } from './CartItem'
-import { Divider } from '@mui/material'
+import { Button, Card, Divider } from '@mui/material'
+import { AddressCard } from './AddressCard'
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const items=[1,1,1,1]
 const   Cart = () => {
+    const createOrderUsingSelectedAddress=()=>{
+
+    }
+    const handleOpenAddressModel=()=>{
+
+    }
     return (
         <div>
             <main className='lg:flex justify-between'>
@@ -39,6 +47,20 @@ const   Cart = () => {
                     <div>
                         <h1 className='text-center font-semibold text-2x1 py-10'>Choose Delivery Address</h1>
                         <div className='flex gap-5 flex-wrap justify-center'>
+                            {[1,1,1,1,1].map((item) =>(
+                            <AddressCard handleSelectAddress={createOrderUsingSelectedAddress}item={item} showButton={true}/>))}
+                                   <Card className="flex gap-5 w-64 p-5">
+            <div className='flex gap-3'>
+                <AddLocationAltIcon/>
+                <div className='space-y-3 text-gray-500'>
+                    <h1 className='font-semibold text-lg text-white'>Add New Address</h1>
+                    
+              
+                        <Button variant="outlined" fullWidth onClick={handleOpenAddressModel}>Add</Button>
+                   
+                </div>
+            </div>
+        </Card>
 
                         </div>
                     </div>
