@@ -5,6 +5,7 @@ import Home from '../component/Home/Home'
 import RestaurantDetails from '../component/Restaurant/RestaurantDetails'
 import Cart from '../component/Cart/Cart.jsx'; 
 import Profile from '../component/Profile/Profile.jsx'; 
+import { Auth } from '../component/Auth/Auth.jsx'
 
 
 export const CustomerRoute = () => {
@@ -18,6 +19,7 @@ export const CustomerRoute = () => {
             <Route path='/cart' element={<Cart/>}/>
             <Route path='/my-profile/*' element={<Profile/>}/>
         </Routes>
+        <Auth/>
     </div>
   )
 }
