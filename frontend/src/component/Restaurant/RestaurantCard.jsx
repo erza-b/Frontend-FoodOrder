@@ -8,7 +8,7 @@ const RestaurantCard = () => {
         <div>
             <Card className='w-[18rem]'>
                 <div className={`${true ? 'cursor-pointer' : 'cursor-not-allowed'} relative`}>
-                    <img className='w-full h-[10rem] rounded-t-md object-cover' src="frontend/public/images/RestaurantCard1.jpg" alt="Photo not found" />
+                    <img className='w-full h-[10rem] rounded-t-md object-cover' src="/images/RestaurantCard1.jpg" alt="Photo not found" />
                     <Chip
                         size="small"
                         className="absolute top-2 left-2"
