@@ -24,6 +24,9 @@ const menu = [
 const ProfileNavigation = ({ open, handleClose }) => {
   const isSmallScreen = useMediaQuery("(max-width:900px)");
 
+
+
+  
   const navigate = useNavigate();
 
   const handleNavigate=(item)=>{
