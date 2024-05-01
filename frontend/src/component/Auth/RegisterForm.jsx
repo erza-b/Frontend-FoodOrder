@@ -14,12 +14,12 @@ const initialValues={
 
 export default function RegisterForm() {
     const navigate=useNavigate()
-    const dispatch=useDispatch()
+    const dispatch =useDispatch()
 
 
     const handleSubmit=(values)=>{
         console.log("form values", values)
-        dispatchEvent(registerUser({userData:values,navigate}))
+        dispatch(registerUser({userData:values,navigate}))
 
           
       };
