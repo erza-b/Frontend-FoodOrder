@@ -5,6 +5,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const RestaurantCard = () => {
     return (
+        
         <div>
             <Card className='w-[18rem]'>
                 <div className={`${true ? 'cursor-pointer' : 'cursor-not-allowed'} relative`}>
