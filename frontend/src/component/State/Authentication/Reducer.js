@@ -28,6 +28,13 @@ export const authReducer=(state=initialState,action)=>{
                                      jwt:action.payload,
                                      success:"Register Success",
                                     };
+                                    case GET_USER_SUCCESS:
+                                      return{
+                                        ...state, 
+                                        isLoading:false,
+                                        user:action.payload,
+
+                                    };
                                    case ADD_TO_FAVORITE_SUCCESS:
                                     return{
                                         ...state,
