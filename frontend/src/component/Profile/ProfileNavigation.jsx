@@ -11,7 +11,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { AddReaction } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import { logout } from "../State/Authentication/Action";
 const menu = [
   { title: "Orders", Icon: <ShoppingBagIcon /> },
   { title: "Favorites", Icon: <FavoriteIcon /> },
