@@ -5,6 +5,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
+
 const demo = [
   {
     category: "Nuts & Seeds",
@@ -31,7 +32,7 @@ const MenuCard = () => {
           <div className="lg:flex items-center lg:gap-5">
             <img
               className="w-[7rem] h-[7rem] object-cover"
-              src="images/burger.jpg"
+              src="/images/burger.jpg"
               alt="burger"
             />
             <div className="space-y-1 lg:space-y-5 lg:max-w-2x1">
