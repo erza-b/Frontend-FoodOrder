@@ -4,6 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { categorizeIngredients } from "../util/categorizeIngredients";
 
 
 const demo = [
@@ -16,7 +17,7 @@ const demo = [
     ingredients: ["Protein", "Bacon strips"],
   },
 ];
-const MenuCard = () => {
+const MenuCard = ({item}) => {
 
     const handleCheckBoxChange = (value) => {
         console.log("value")
@@ -32,13 +33,13 @@ const MenuCard = () => {
           <div className="lg:flex items-center lg:gap-5">
             <img
               className="w-[7rem] h-[7rem] object-cover"
-              src="/images/burger.jpg"
+              src={item.images[0]}//"/images/burger.jpg"
               alt="burger"
             />
             <div className="space-y-1 lg:space-y-5 lg:max-w-2x1">
-              <p className="font-semibold text-xl">Burger</p>
-              <p>4.99€</p>
-              <p className="text-gray-400">nice food</p>
+              <p className="font-semibold text-xl">{item.name}</p>
+              <p>{item.price}</p>
+              <p className="text-gray-400">{item.description}</p>
             </div>
           </div>
         </div>
@@ -46,14 +47,14 @@ const MenuCard = () => {
       <AccordionDetails>
         <form>
           <div className="flex gap-5 flex-wrap">
-            {demo.map((item) => (
+            {Object.keys(categorizeIngredients(item.ingredients)).map((category) => (
               <div>
-                <p>{item.category}</p>
+                <p>{category}</p>
                 <FormGroup>
-                    {item.ingredients.map((item) => 
-                  <FormControlLabel
+                    {categorizeIngredients(item.ingredients)[category].map((item) => 
+                  <FormControlLabel key={item.name}
                     control={<Checkbox onChange={() => handleCheckBoxChange(item)} />}
-                    label={item}
+                    label={item.name}
                   /> )}
                 </FormGroup>
               </div>
