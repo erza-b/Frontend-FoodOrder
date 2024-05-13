@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -6,6 +6,9 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 import { Divider, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import MenuCard from './MenuCard';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRestaurantById } from '../State/Restaurant/Action';
 
 const categories=[
     "pizza",
@@ -26,9 +29,22 @@ const menu=[1,1,1,1,1,1];
 
 const RestaurantDetails=()=>{
     const[foodType,setFoodType]=useState("all")
+    const navigate=useNavigate()
+    const dispatch=useDispatch();
+    const jwt=localStorage.getItem("jwt")
+    const {auth,restaurant}= useSelector(store=>store)
+
+    const {id,city}=useParams();
+
+
     const handleFilter=(e)=>{
         console.log(e.target.value,e.target.name)
     }
+    console.log("restaurant",restaurant)
+
+    useEffect(()=>{
+        dispatch(getRestaurantById({jwt,restaurantId:id}))
+    },[])
     return (
         <div className='px-5 lg:px-20'>
             <section>
@@ -38,14 +54,14 @@ const RestaurantDetails=()=>{
                         <Grid item xs={12}>
                             <img
                              className="w-full h-[40vh] object-cover"
-                            src="https://people.com/thmb/07L6ojYRPHVIkrIJoCwTrDacIOo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(329x0:331x2):format(webp)/most-view-9-660-e733afb5c83145a49d7c2bb820f51501.jpg"
+                            src={restaurant.restaurant?.images[0]}
                              alt="" 
                             />
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <img
                              className="w-full h-[40vh] object-cover"
-                            src="https://people.com/thmb/vPXvXcEcYCedq6MyvzeivNTQUKQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(329x0:331x2):format(webp)/most-view-6-660-19e72af450e143db97ff3262f87d29eb.jpg"
+                            src={restaurant.restaurant?.images[1]}
                              alt="" 
                             />
                         </Grid>
@@ -59,14 +75,13 @@ const RestaurantDetails=()=>{
                     </Grid>
                 </div>
                 <div className="pt-3 pb-5">
-                    <h1 className="text-4x1 font-semibold">Indian Fast Food</h1>
-                    <p className="text-gray-500 mt-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                        Repellat quam sunt magnam reiciendis dolorem non, 
-                        illo repudiandae aliquam rem tempore
-                         libero maxime aliquid excepturi possimus esse magni dolorum nam reprehenderit.</p>
+                    <h1 className="text-4x1 font-semibold">{restaurant.restaurant?.name}</h1>
+                    <p className="text-gray-500 mt-1">
+                        {restaurant.restaurant?.description}
+                        </p>
                     <div className="space-y-3 mt-3">
 
-                    </div>
+                   
                     <p className="text-gray-500 flex items-center gap-3">
                   <LocationOnIcon/>  
                         <span>
@@ -80,7 +95,7 @@ const RestaurantDetails=()=>{
                         Mon-Sun:9:00AM-9:00PM(Today)
                              </span>
                     </p>
-
+                    </div>
                 </div>
 
             </section>
