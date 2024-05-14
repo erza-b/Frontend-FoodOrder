@@ -1,11 +1,17 @@
-import React from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { categorizeIngredients } from "../util/categorizeIngredients";
-
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../State/Cart/Action";
 
 const demo = [
   {
@@ -17,11 +23,34 @@ const demo = [
     ingredients: ["Protein", "Bacon strips"],
   },
 ];
-const MenuCard = ({item}) => {
+const MenuCard = ({ item }) => {
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
 
-    const handleCheckBoxChange = (value) => {
-        console.log("value")
+  const dispatch=useDispatch();
+  const handleCheckBoxChange = (itemName) => {
+    console.log("value");
+    if (selectedIngredients.includes(itemName)) {
+      setSelectedIngredients(
+        selectedIngredients.filter((item) => item !== itemName)
+      );
+    } else {
+      setSelectedIngredients([...selectedIngredients, itemName]);
     }
+  };
+  const handleAddItemToCart = (e) => {
+    e.preventDefault()
+    const reqData = {
+      token: localStorage.getItem("jwt"),
+      cartItem: {
+        foodId: item.id,
+        quantity: 1,
+        ingredients: selectedIngredients,
+      },
+    };
+    dispatch(addItemToCart(reqData));
+    console.log("req data" +reqData);
+  };
+
   return (
     <Accordion>
       <AccordionSummary
@@ -33,7 +62,7 @@ const MenuCard = ({item}) => {
           <div className="lg:flex items-center lg:gap-5">
             <img
               className="w-[7rem] h-[7rem] object-cover"
-              src={item.images[0]}//"/images/burger.jpg"
+              src={item.images[0]} //"/images/burger.jpg"
               alt="burger"
             />
             <div className="space-y-1 lg:space-y-5 lg:max-w-2x1">
@@ -45,24 +74,38 @@ const MenuCard = ({item}) => {
         </div>
       </AccordionSummary>
       <AccordionDetails>
-        <form>
+        <form onSubmit={handleAddItemToCart}>
           <div className="flex gap-5 flex-wrap">
-            {Object.keys(categorizeIngredients(item.ingredients)).map((category) => (
-              <div>
-                <p>{category}</p>
-                <FormGroup>
-                    {categorizeIngredients(item.ingredients)[category].map((item) => 
-                  <FormControlLabel key={item.name}
-                    control={<Checkbox onChange={() => handleCheckBoxChange(item)} />}
-                    label={item.name}
-                  /> )}
-                </FormGroup>
-              </div>
-            ))}
+            {Object.keys(categorizeIngredients(item.ingredients)).map(
+              (category) => (
+                <div>
+                  <p>{category}</p>
+                  <FormGroup>
+                    {categorizeIngredients(item.ingredients)[category].map(
+                      (item) => (
+                        <FormControlLabel
+                          key={item.id}
+                          control={
+                            <Checkbox
+                              onChange={() => handleCheckBoxChange(item)}
+                            />
+                          }
+                          label={item.name}
+                        />
+                      )
+                    )}
+                  </FormGroup>
+                </div>
+              )
+            )}
           </div>
           <div className="pt-5">
-            <Button variant="contained" disabled={false} type="submit">
-                {true?"Add to Cart" : " Out Of Stock"}
+            <Button
+              variant="contained"
+              disabled={false}
+              type="submit"
+            >
+              {true ? "Add to Cart" : " Out Of Stock"}
             </Button>
           </div>
         </form>

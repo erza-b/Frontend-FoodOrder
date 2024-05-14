@@ -4,6 +4,8 @@ import { Box, Button, Card, Divider, Grid, Modal, TextField, FormHelperText } fr
 import { AddressCard } from './AddressCard'
 import { AddLocation } from '@mui/icons-material';
 import { ErrorMessage, Formik, Field, Form } from "formik";
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '../State/Order/Action';
 
 
 export const style = {
@@ -31,65 +33,84 @@ const initialValues={
 
 // })
 
-const items=[1,1,1,1]
-const   Cart = () => {
-    const createOrderUsingSelectedAddress=()=>{};
-    const handleOpenAddressModel= () => setOpen(true);
+const Cart = () => {
+    const createOrderUsingSelectedAddress = () => {};
+    const handleOpenAddressModel = () => setOpen(true);
     const [open, setOpen] = React.useState(false);
-    
+    const { cart , auth } = useSelector(store => store);
+
+    const dispatch=useDispatch();
+    // Check if cart is null before accessing its properties
+    const total = cart.cart?.total || 0;
+
     const handleClose = () => setOpen(false);
     const handleSubmit = (values) => {
+        const data ={
+            jwt:localStorage.getItem("jwt"),
+            order:{
+                restaurantId:cart.cartItems[0].food?.restaurant.id,
+                deliveryAddress:{
+                    fullName:auth.user?.fullName,
+                    streetAddress:values.streetAddress,
+                    city:values.city,
+                    state:values.state,
+                    postalCode:values.pincode,
+                    country:"india"
+                }
+            }
+        }
+        dispatch(createOrder(data))
         console.log("form value", values)
     };
+
     return (
         <>
             <main className='lg:flex justify-between'>
-
                 <section className='lg:w-[30%] space-y-6 lg:min-h-screen pt-10'>
-                    {items.map(() => <CartItem />)}
-            
-                <div className='billDetails lg:w-[90%] pl-[10%]'>
-                    <p className="font-extralight py-5">Bill Details</p>
-                    <div className='space-y-3'>
-                        <div className='flex justify-between text-gray-400'>
-                            <p>Item Total</p>
-                            <p>4.99€</p>
+                    {cart.cartItems.map((item, index) => (
+                        <CartItem key={index} item={item} />
+                    ))}
+                    <Divider />
+                    <div className='billDetails lg:w-[90%] pl-[10%]'>
+                        <p className="font-extralight py-5">Bill Details</p>
+                        <div className='space-y-3'>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>Item Total</p>
+                                <p>{cart.cart?.total}</p>
+                            </div>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>Deliver Fee</p>
+                                <p>3.00€</p>
+                            </div>
+                            <div className='flex justify-between text-gray-400'>
+                                <p>GST and Restaurant Charges</p>
+                                <p>6.00€</p>
+                            </div>
+                            <Divider />
                         </div>
                         <div className='flex justify-between text-gray-400'>
-                            <p>Deliver Fee</p>
-                            <p>3.00€</p>
+                            <p>Total pay</p>
+                            <p>{cart.cart?.total + 3 + 6}</p>
                         </div>
-                        <div className='flex justify-between text-gray-400'>
-                            <p>GST and Restaurant Charges</p>
-                            <p>6.00€</p>
-                        </div>
-                        <Divider />
                     </div>
-                    <div className='flex justify-between text-gray-400'>
-                        <p>Total pay</p>
-                        <p>14.00€</p>
-                    </div>
-                </div>
                 </section>
-                <Divider orientation='vertical' flexItem/>
+                <Divider orientation='vertical' flexItem />
                 <section className='lg:w-[70%] flex justify-center px-5 pb-10 lg: pv-0'>
                     <div>
                         <h1 className='text-center font-semibold text-2x1 py-10'>Choose Delivery Address</h1>
                         <div className='flex gap-5 flex-wrap justify-center'>
-                            {[1,1,1,1,1].map((item) =>(
-                            <AddressCard handleSelectAddress={createOrderUsingSelectedAddress}item={item} showButton={true}/>))}
-                                   <Card className="flex gap-5 w-64 p-5">
-            <div className='flex gap-3'>
-                <AddLocation />
-                <div className='space-y-3 text-gray-500'>
-                    <h1 className='font-semibold text-lg text-white'>Add New Address</h1>
-                    
-                        <Button variant="outlined" fullWidth onClick={handleOpenAddressModel}>Add</Button>
-                   
-                </div>
-            </div>
-        </Card>
-
+                            {[1, 1, 1, 1, 1].map((item, index) => (
+                                <AddressCard key={index} handleSelectAddress={createOrderUsingSelectedAddress} item={item} showButton={true} />
+                            ))}
+                            <Card className="flex gap-5 w-64 p-5">
+                                <div className='flex gap-3'>
+                                    <AddLocation />
+                                    <div className='space-y-3 text-gray-500'>
+                                        <h1 className='font-semibold text-lg text-white'>Add New Address</h1>
+                                        <Button variant="outlined" fullWidth onClick={handleOpenAddressModel}>Add</Button>
+                                    </div>
+                                </div>
+                            </Card>
                         </div>
                     </div>
                 </section>
@@ -180,7 +201,7 @@ const   Cart = () => {
                 </Box>
             </Modal>
         </>
-    )
+    );
 }
 
 export default Cart;

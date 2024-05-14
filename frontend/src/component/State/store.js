@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore, legacy_createStore } from "redux";
 import { authReducer } from "./Authentication/Reducer";
 import { thunk } from "redux-thunk"; // Import thunk from redux-thunk
 import restaurantReducer from "./Restaurant/Reducer";
@@ -18,4 +18,4 @@ const rootReducer = combineReducers({
   ingredients: ingredientReducer
 });
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));

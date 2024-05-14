@@ -12,11 +12,11 @@ import { useSelector } from "react-redux";
 
 
 export const Navbar = () => {
-    const {auth}=useSelector(store=>store)
+    const {auth,cart}=useSelector(store=>store)
     const navigate=useNavigate();
 
     const handleAvatarClick=()=>{
-        if(auth.user.role==="ROLE_CUSTOMER"){
+        if(auth.user?.role==="ROLE_CUSTOMER"){
             navigate("/my-profile")
         }
         else{
@@ -41,7 +41,7 @@ export const Navbar = () => {
                 </div>
                 <div className=''>
 
-                    {auth.user ? (
+                    {auth.user? (
                     <Avatar onClick={handleAvatarClick} sx={{ bgcolor: "white", color: pink.A400 }}>
                         {auth.user?.fullName[0].toUpperCase()}
                         </Avatar>
@@ -53,8 +53,8 @@ export const Navbar = () => {
                 </div>
                 <div className=''>
 
-                    <IconButton>
-                        <Badge color='primary' badgeContent={3}>
+                    <IconButton onClick={()=>navigate("/cart")}>
+                    <Badge color='primary' badgeContent={cart.cart?.items?.length || 0}>
                             <ShoppingCartIcon sx={{ fontSize: "1.5rem" }} />
 
                         </Badge>
