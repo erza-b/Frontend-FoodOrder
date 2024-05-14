@@ -1,11 +1,12 @@
-import { api } from "../../../config/api";
+
+import { api } from "../../config/api";
 import { CREATE_ORDER_FAILURE, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, GET_USERS_NOTIFICATION_FAILURE, GET_USERS_NOTIFICATION_SUCCESS, GET_USERS_ORDERS_FAILURE, GET_USERS_ORDERS_REQUEST, GET_USERS_ORDERS_SUCCESS } from "./ActionTypes";
 
 export const createOrder = (reqData) => {
     return async (dispatch) => {
         dispatch({type:CREATE_ORDER_REQUEST});
         try {
-            const {data} = await api.post(`/api.order`, reqData.order, {
+            const {data} = await api.post(`/api/order`, reqData.order, {
                 headers: {
                     Authorization: `Bearer ${reqData.jwt}`,
                 },
