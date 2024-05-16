@@ -4,17 +4,14 @@ import Button from '@mui/material/Button'; // Import Button from Material-UI
 
 
 
-const CreateFoodCategoryForm=()=>{
-    const [formData, setFormData]=useState({categoryName:"",restaurantId:""})
+const CreateIngredientCategoryForm=()=>{
+    const [formData, setFormData]=useState({
+        name:"",
+    })
     const handleSumbit =()=>{
 
-        const data={
-            name:formData.categoryName,
-            restaurantId:{
-                id:1,
-            },
-        };
-        console.log(data)
+      
+        console.log(formData)
     };
     const handleInputChange=(e) =>{
         const{name,value}=e.target
@@ -25,16 +22,16 @@ const CreateFoodCategoryForm=()=>{
     return (
         <div className=''>
             <div className='p-5'>
-                <h1 className='test-gray-400 text-center text-xl pb-10'>Create Food Category</h1>
+                <h1 className='test-gray-400 text-center text-xl pb-10'>Create Ingredient Category</h1>
       <form  className="space-y-5"onSubmit={handleSumbit}>
       <TextField
               fullWidth
-              id="categoryName"
-              name="categoryName"
-              label="Food Category"
+              id="name"
+              name="name"
+              label="category"
               variant="outlined"
               onChange={handleInputChange}
-              value={formData.categoryName}
+              value={formData.name}
             ></TextField>
 
             <Button variant="contained" type="submit">
@@ -47,4 +44,4 @@ const CreateFoodCategoryForm=()=>{
     );
 };
 
-export default CreateFoodCategoryForm
+export default CreateIngredientCategoryForm

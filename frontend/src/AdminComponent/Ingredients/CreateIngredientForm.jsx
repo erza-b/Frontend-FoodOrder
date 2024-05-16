@@ -34,7 +34,7 @@ const CreateIngredientForm=()=>{
     return (
         <div className=''>
             <div className='p-5'>
-                <h1 className='test-gray-400 text-center text-xl pb-10'>Create Category</h1>
+                <h1 className='test-gray-400 text-center text-xl pb-10'>Create Ingredient</h1>
       <form  className="space-y-5"onSubmit={handleSumbit}>
       <TextField
               fullWidth
