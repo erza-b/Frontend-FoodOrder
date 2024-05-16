@@ -12,6 +12,7 @@ import { Delete } from '@mui/icons-material';
 import React, { useState } from 'react';
 
 import Modal from '@mui/material/Modal'; // Import Modal from Material-UI
+import CreateIngredientForm from './CreateIngredientForm';
 
 
 const orders = [1, 1, 1, 1, 1, 1, 1]
@@ -78,6 +79,7 @@ export default function IngredientTable() {
   aria-describedby="modal-modal-description"
 >
   <Box sx={style}>
+    <CreateIngredientForm/>
   </Box>
 </Modal>
           
