@@ -8,6 +8,7 @@ import { FoodCategory } from '../FoodCategory/FoodCategory'
 import { Ingredients } from '../Ingredients/Ingredients'
 import { RestaurantDetails } from './RestaurantDetails'
 import { Events } from '../Events/Events'
+import CreateMenuForm from '../Menu/CreateMenuForm'
 
 
 export const Admin = () => {
@@ -30,6 +31,7 @@ export const Admin = () => {
                     <Route path='/ingredients' element={<Ingredients />} />
                     <Route path='/event' element={<Events />} />
                     <Route path='/details' element={<RestaurantDetails />} />
+                    <Route path='/add-menu' element={<CreateMenuForm />} />
                 </Routes>
 
             </div>

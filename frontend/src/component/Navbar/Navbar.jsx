@@ -20,7 +20,7 @@ export const Navbar = () => {
             navigate("/my-profile")
         }
         else{
-            navigate("/admin/restaurant")
+            navigate("/admin/restaurants/")
         }
 
     }
