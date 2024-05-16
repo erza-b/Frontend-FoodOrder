@@ -56,11 +56,11 @@ const CreateRestaurantForm = () => {
     });
 
     const handleImageChange = (e) => {
-        // Handle image change here
+        
     }
 
-    const handleRemoveImage = () => {
-        // Handle image removal here
+    const handleRemoveImage = (index) => {
+        
     }
 
     return (
