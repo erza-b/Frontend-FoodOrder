@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 
 import Modal from '@mui/material/Modal'; // Import Modal from Material-UI
 import CreateIngredientForm from './CreateIngredientForm';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const orders = [1, 1, 1, 1, 1, 1, 1]
@@ -30,6 +31,9 @@ const style = {
   
 
 export default function IngredientTable() {
+    const dispatch= useDispatch()
+    const jwt=localStorage.getItem("jwt");
+    const {restaurant,ingredients}=useSelector(store=>store)
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
