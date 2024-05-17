@@ -23,7 +23,7 @@ export const Admin = () => {
     }
     useEffect(()=>{
       dispatch(getRestaurantsCategory({jwt, restaurantId:restaurant.userRestaurant?.id,}))
-      dispatch(fetchRestaurantsOrder(jwt, restaurantId: restaurant.userRestaurant?.id));
+      dispatch(fetchRestaurantsOrder({jwt, restaurantId: restaurant.userRestaurant?.id}));
 
      
 
