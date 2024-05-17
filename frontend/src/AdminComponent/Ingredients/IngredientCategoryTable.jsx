@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import React and useState hook
+import React, { useEffect, useState } from 'react'; // Import React and useState hook
 import Modal from '@mui/material/Modal'; // Import Modal component from Material-UI
 import { Box, Card, CardActions, CardHeader } from '@mui/material'; // Import necessary Material-UI components
 import Table from '@mui/material/Table';
@@ -12,6 +12,8 @@ import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
 import { Delete } from '@mui/icons-material';
 import CreateIngredientCategoryForm from './CreateIngredientCategoryForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredientCategory } from '../../component/State/Ingredients/Action';
 
 const orders = [1, 1, 1, 1, 1, 1, 1];
 
@@ -30,6 +32,14 @@ export default function IngredientCategoryTable() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const dispatch=useDispatch()
+    const {restaurant,ingredients}=useSelector(store=>store)
+    const jwt=localStorage.getItem('jwt')
+
+
+    useEffect(()=>{
+        dispatch(getIngredientCategory({id:restaurant.usersRestaurant.id,jwt}))
+    },[])
   
     return (
         <Box>
@@ -51,15 +61,15 @@ export default function IngredientCategoryTable() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {orders.map((row) => (
+                            {ingredients.categroy.map((item) => (
                                 <TableRow
-                                    key={row.name}
+                                    key={item.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {1}
+                                        {item.id}
                                     </TableCell>
-                                    <TableCell align="left">{"name"}</TableCell>
+                                    <TableCell align="left">{item.name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

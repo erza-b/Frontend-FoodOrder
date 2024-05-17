@@ -5,17 +5,23 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { useDispatch } from 'react-redux';
+import { createIngredientCategory } from '../../component/State/Ingredients/Action';
+
 
 
 
 
 
 const CreateIngredientForm=()=>{
+    const dispatch=useDispatch();
+    const jwt=localStorage.getItem("jwt")
     const [formData, setFormData]=useState({
         name:"",
         ingredientCategoryId:""
     });
-    const handleSumbit =()=>{
+    const handleSumbit =(e)=>{
+        e.preventDefault();
 
         const data={
             name:formData.categoryName,
