@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'; // Import Button from Material-UI
+import { useDispatch, useSelector } from 'react-redux';
+import { createCategoryAction } from '../../component/State/Restaurant/Action';
 
 
 
 const CreateFoodCategoryForm=()=>{
+    const {restaurant}=useSelector(store=>store);
+    const dispatch=useDispatch()
     const [formData, setFormData]=useState({categoryName:"",restaurantId:""})
-    const handleSumbit =()=>{
+    const handleSumbit =(e)=>{
+        e.preventDefault();
 
         const data={
             name:formData.categoryName,
@@ -14,6 +19,7 @@ const CreateFoodCategoryForm=()=>{
                 id:1,
             },
         };
+        dispatch(createCategoryAction({reqData:data,jwt:localStorage.getItem("jwt")}))
         console.log(data)
     };
     const handleInputChange=(e) =>{
