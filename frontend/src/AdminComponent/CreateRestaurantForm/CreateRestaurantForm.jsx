@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { uploadImageToCloudinary } from "../Util/UploadToCloudinary"
+import { useDispatch } from "react-redux";
+import { createRestaurant } from "../../component/State/Restaurant/Action";
 
 
 const initialValues = {
@@ -26,6 +28,8 @@ const initialValues = {
 
 const CreateRestaurantForm = () => {
   const [uploadImage, setUploadImage] = useState(false);
+  const dispatch =useDispatch()
+  const jwt=localStorage.getItem("jwt");
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
@@ -50,7 +54,9 @@ const CreateRestaurantForm = () => {
         openingHours: values.openingHours,
         images: values.images,
       };
-      console.log("data ---", data);
+      console.log("data ---", data)
+      
+      dispatch(createRestaurant({data,token:jwt}))
     },
   });
 
