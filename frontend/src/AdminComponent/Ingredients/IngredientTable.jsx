@@ -9,11 +9,12 @@ import Paper from '@mui/material/Paper';
 import CreateIcon from '@mui/icons-material/Create';
 import IconButton from '@mui/material/IconButton';
 import { Delete } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Modal from '@mui/material/Modal'; // Import Modal from Material-UI
 import CreateIngredientForm from './CreateIngredientForm';
 import { useDispatch, useSelector } from 'react-redux';
+import { getIngredientsOfRestaurant, updateStockOfIngredient } from '../../component/State/Ingredients/Action';
 
 
 const orders = [1, 1, 1, 1, 1, 1, 1]
@@ -37,6 +38,17 @@ export default function IngredientTable() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    useEffect(()=>{
+        dispatch(
+            getIngredientsOfRestaurant({jwt, id: restaurant.usersRestaurant.id})
+        );
+
+    },[])
+
+    const handleUpdateStoke=(id)=>{
+        dispatch(updateStockOfIngredient({id,jwt}))
+    }
     return (
         <Box>
             <Card className='mt-1'>
@@ -59,17 +71,19 @@ export default function IngredientTable() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {orders.map((row) => (
+                            {ingredients.ingredients.map((item) => (
                                 <TableRow
-                                    key={row.name}
+                                    key={item.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {1}
+                                        {item.id}
                                     </TableCell>
-                                    <TableCell align="right">{"image"}</TableCell>
-                                    <TableCell align="right">{"price"}</TableCell>
-                                    <TableCell align="right">{"pizza"}</TableCell>
+                                    <TableCell align="right">{item.name}</TableCell>
+                                    <TableCell align="right">{item.category.name}</TableCell>
+                                    <TableCell align="right">
+                                        <Button onClick ={()=>handleUpdateStoke(item.id)}>{item.inStoke?"in_Stoke":"out_of_stoke"}</Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
