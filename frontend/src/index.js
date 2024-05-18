@@ -2,22 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {BrowserRouter} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import {Provider} from "react-redux";
-import { store } from './component/State/store';
-
+import { Provider } from 'react-redux';
+import { store } from './component/State/store'; // Ensure this path is correct
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Provider store={store}>
-    <App />
-    </Provider>
-    
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
- 
   </React.StrictMode>
 );
 
