@@ -3,6 +3,8 @@ import { Button, Modal, Box, TextField, Grid } from '@mui/material';
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { useDispatch, useSelector } from 'react-redux';
+import { createEventAction } from '../../component/State/Restaurant/Action';
 
 const style = {
   position: 'absolute',
@@ -16,22 +18,33 @@ const style = {
   p: 4,
 };
 
+const initialValues = {
+  image: "",
+  location: "",
+  name: "",
+  startedAt: null,
+  endsAt: null,
+}
+
 export const Events = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [formValues, setFormValues] = React.useState({
-    image: "",
-    location: "",
-    name: "",
-    startedAt: null,
-    endsAt: null
-  });
+  const [formValues, setFormValues] = React.useState(initialValues);
+  const dispatch=useDispatch();
+  const jwt=localStorage.getItem("jwt");
+  const {restaurant}=useSelector((store)=>store);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formValues);
-    handleClose(); // Close the modal after submission
+    console.log("submit", formValues);
+    dispatch(createEventAction({
+      data:formValues, 
+      restaurantId:restaurant.usersRestaurant?.id,
+      jwt
+    })
+  );
+    setFormValues(initialValues);
   };
 
   const handleFormChange = (e) => {
@@ -39,7 +52,8 @@ export const Events = () => {
   };
 
   const handleDateChange = (date, dateType) => {
-    setFormValues({ ...formValues, [dateType]: date });
+    const formatedDate = dayjs(date).format("MMMM DD, YYYY hh:mm A");
+    setFormValues({ ...formValues, [dateType]: formatedDate });
   };
 
   return (

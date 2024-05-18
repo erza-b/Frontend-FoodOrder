@@ -18,7 +18,7 @@ const orders = [1, 1, 1, 1, 1, 1, 1]
 export default function MenuTable() {
     const dispatch=useDispatch();
     const jwt=localStorage.getItem("jwt")
-    const {restaurant,ingredients,menu}=useSelector((store)=>store)
+    const {restaurant,ingredients,menu}=useSelector((store)=>store);
     const navigate =useNavigate();
     useEffect(()=>{
  dispatch(getMenuItemsByRestaurantId({
@@ -74,7 +74,7 @@ export default function MenuTable() {
                                     <TableCell align="right">
                                         <IconButton color="primary" onClick={()=>handleDeleteFood(item.id)}>
                                             <Delete/>
-                                            </IconButton>
+                                        </IconButton>
                                             </TableCell>
                                 </TableRow>
                             ))}
