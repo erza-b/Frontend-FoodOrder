@@ -19,12 +19,13 @@ const CreateIngredientForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
-            ...formData,
-            restaurantId: restaurant.usersRestaurant.id
-        };
-        dispatch(createIngredient({ data, jwt }));
-        console.log(data);
+        if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.id) {
+            const data = {
+                ...formData,
+                restaurantId: restaurant.usersRestaurant.id
+            };
+            dispatch(createIngredient({ data, jwt }));
+        }
     };
 
     const handleInputChange = (e) => {
@@ -58,7 +59,7 @@ const CreateIngredientForm = () => {
                             onChange={handleInputChange}
                             name="categoryId"
                         >
-                            {ingredients.category.map((item) => (
+                            {ingredients && ingredients.category && ingredients.category.map((item) => (
                                 <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                             ))}
                         </Select>
