@@ -13,32 +13,22 @@ import { categorizeIngredients } from "../util/categorizeIngredients";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "../State/Cart/Action";
 
-const demo = [
-  {
-    category: "Nuts & Seeds",
-    ingredients: ["Cashews"],
-  },
-  {
-    category: "Protein",
-    ingredients: ["Protein", "Bacon strips"],
-  },
-];
 const MenuCard = ({ item }) => {
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const dispatch = useDispatch();
 
-  const dispatch=useDispatch();
-  const handleCheckBoxChange = (itemName) => {
-    console.log("value");
-    if (selectedIngredients.includes(itemName)) {
+  const handleCheckBoxChange = (ingredient) => {
+    if (selectedIngredients.includes(ingredient)) {
       setSelectedIngredients(
-        selectedIngredients.filter((item) => item !== itemName)
+        selectedIngredients.filter((item) => item !== ingredient)
       );
     } else {
-      setSelectedIngredients([...selectedIngredients, itemName]);
+      setSelectedIngredients([...selectedIngredients, ingredient]);
     }
   };
+
   const handleAddItemToCart = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const reqData = {
       token: localStorage.getItem("jwt"),
       cartItem: {
@@ -48,7 +38,6 @@ const MenuCard = ({ item }) => {
       },
     };
     dispatch(addItemToCart(reqData));
-    console.log("req data" +reqData);
   };
 
   return (
@@ -62,8 +51,8 @@ const MenuCard = ({ item }) => {
           <div className="lg:flex items-center lg:gap-5">
             <img
               className="w-[7rem] h-[7rem] object-cover"
-              src={item.images[0]} //"/images/burger.jpg"
-              alt="burger"
+              src={item.images[0]}
+              alt={item.name}
             />
             <div className="space-y-1 lg:space-y-5 lg:max-w-2x1">
               <p className="font-semibold text-xl">{item.name}</p>
@@ -76,36 +65,35 @@ const MenuCard = ({ item }) => {
       <AccordionDetails>
         <form onSubmit={handleAddItemToCart}>
           <div className="flex gap-5 flex-wrap">
-            {Object.keys(categorizeIngredients(item.ingredients)).map(
-              (category) => (
-                <div>
-                  <p>{category}</p>
-                  <FormGroup>
-                    {categorizeIngredients(item.ingredients)[category].map(
-                      (item) => (
-                        <FormControlLabel
-                          key={item.id}
-                          control={
-                            <Checkbox
-                              onChange={() => handleCheckBoxChange(item)}
-                            />
-                          }
-                          label={item.name}
-                        />
-                      )
-                    )}
-                  </FormGroup>
-                </div>
-              )
-            )}
+            {item.ingredients &&
+              Object.keys(categorizeIngredients(item.ingredients)).map(
+                (category) => (
+                  <div key={category}>
+                    <p>{category}</p>
+                    <FormGroup>
+                      {categorizeIngredients(item.ingredients)[category].map(
+                        (ingredient) => (
+                          <FormControlLabel
+                            key={ingredient}
+                            control={
+                              <Checkbox
+                                onChange={() =>
+                                  handleCheckBoxChange(ingredient)
+                                }
+                              />
+                            }
+                            label={ingredient}
+                          />
+                        )
+                      )}
+                    </FormGroup>
+                  </div>
+                )
+              )}
           </div>
           <div className="pt-5">
-            <Button
-              variant="contained"
-              disabled={false}
-              type="submit"
-            >
-              {true ? "Add to Cart" : " Out Of Stock"}
+            <Button variant="contained" disabled={false} type="submit">
+              {true ? "Add to Cart" : "Out Of Stock"}
             </Button>
           </div>
         </form>
@@ -113,4 +101,5 @@ const MenuCard = ({ item }) => {
     </Accordion>
   );
 };
+
 export default MenuCard;

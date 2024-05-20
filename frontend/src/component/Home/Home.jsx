@@ -14,6 +14,7 @@ const Home = () => {
   const dispatch=useDispatch()
   const jwt=localStorage.getItem("jwt")
   const {restaurant}=useSelector(store=>store)
+  const navigate=useNavigate()
 
   console.log("restaurant",restaurant)
 

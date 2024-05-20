@@ -6,7 +6,7 @@ export const findCart = (token) => {
     return async (dispatch) => {
         dispatch({type:FIND_CART_REQUEST});
         try {
-            const response = await api.get('/api/cart/' ,{
+            const response = await api.get('/api/cart' ,{
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -52,17 +52,24 @@ const restaurantReducer = (state = initialState, action) => {
         userRestaurant: action.payload,
       };
     case actionTypes.DELETE_RESTAURANT_SUCCESS:
-      return {
-        ...state,
-        error: null,
-        loading: false,
-        restaurants: state.restaurants.filter(
-          (item) => item.id !== action.payload
-        ),
-        usersRestaurant: state.restaurants.filter(
-          (item) => item.id !== action.payload
-        ),
-      };
+        return {
+          ...state,
+          error: null,
+          loading: false,
+          restaurants: state.restaurants.filter(
+            (item) => item.id !== action.payload
+          ),
+          userRestaurant: state.userRestaurant.filter( // Corrected typo
+            (item) => item.id !== action.payload
+          ),
+        };
+    case actionTypes.GET_RESTAURANTS_CATEGORY_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          categories: [...state.categories, ...action.payload], // Merging categories
+        };
+      
     case actionTypes.CREATE_EVENTS_SUCCESS:
       return {
         ...state,

@@ -1,5 +1,6 @@
 
 import { api } from "../../config/api";
+import axios from 'axios';
 import {
   CREATE_CATEGORY_FAILURE,
   CREATE_CATEGORY_REQUEST,
@@ -38,6 +39,8 @@ import {
   DELETE_RESTAURANT_FAILURE,
   DELETE_RESTAURANT_SUCCESS,
 } from "./ActionTypes";
+
+export const API_URL="http://localhost:5454"
 
 export const getAllRestaurantsAction = (token) => {
   return async (dispatch) => {
@@ -78,44 +81,46 @@ export const getRestaurantById = (reqData) => {
 };
 
 export const getRestaurantByUserId = (jwt) => {
-  return async (dispatch) => {
-    dispatch({ type: GET_RESTAURANT_BY_USER_ID_REQUEST });
-    try {
-      const { data } = await api.get("/api/admin/restaurants/user", {
-        headers: {
-          Authorization: ` Bearer ${jwt}`,
-        },
-      });
-      console.log("get restaurant by user id", data);
-      dispatch({ type: GET_RESTAURANT_BY_USER_ID_SUCCESS, payload: data });
-    } catch (error) {
-      console.log("catch error ", error);
-      dispatch({
-        type: GET_RESTAURANT_BY_USER_ID_FAILURE,
-        payload: error.message,
-      });
-    }
-  };
+    return async (dispatch) => {
+      dispatch({ type: GET_RESTAURANT_BY_USER_ID_REQUEST });
+      try {
+        const { data } = await api.get("/api/admin/restaurants/user", {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+        console.log("get restaurant by user id", data);
+        dispatch({ type: GET_RESTAURANT_BY_USER_ID_SUCCESS, payload: data });
+      } catch (error) {
+        console.log("catch error ", error);
+        dispatch({
+          type: GET_RESTAURANT_BY_USER_ID_FAILURE,
+          payload: error.message,
+        });
+      }
+    };
 };
 
-export const createRestaurant = (reqData) => {
-  console.log("token----------------", reqData.token);
-  return async (dispatch) => {
-    dispatch({ type: CREATE_RESTAURANT_REQUEST });
-    try {
-      const { data } = await api.post(`/api/admin/restuarants`, reqData.data, {
-        headers: {
-          Authorization: `Bearer ${reqData.token}`,
-        },
-      });
-      dispatch({ type: CREATE_RESTAURANT_SUCCESS, payload: data });
-      console.console.log("created restaurant ", data);
-    } catch (error) {
-      console.log("catch error ", error);
-      dispatch({ type: CREATE_RESTAURANT_FAILURE, payload: error });
-    }
+
+
+export const createRestaurant = (restaurantData, jwt) => {
+    return async (dispatch) => {
+      dispatch({ type: CREATE_RESTAURANT_REQUEST });
+      try {
+        const response = await axios.post(`${API_URL}/api/admin/restaurants`, restaurantData, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+        dispatch({ type: CREATE_RESTAURANT_SUCCESS, payload: response.data });
+      } catch (error) {
+        console.error("Error creating restaurant: ", error.response ? error.response.data : error.message);
+        dispatch({ type: CREATE_RESTAURANT_FAILURE, payload: error.response ? error.response.data : error.message });
+      }
+    };
   };
-};
+  
+  
 
 export const updateRestaurant = ({restaurantId , restaurantData,jwt}) => {
     return async (dispatch) => {
