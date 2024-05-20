@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { uploadImageToCloudinary } from "../Util/UploadToCloudinary"
 import { useDispatch } from "react-redux";
 import { createRestaurant } from "../../component/State/Restaurant/Action";
+import * as Yup from "yup"; // Import Yup for validation
 
 
 const initialValues = {
@@ -25,13 +26,19 @@ const initialValues = {
   openingHours: "Mon-Sun : 9:00 AM - 12:00 PM",
   images: [],
 };
-
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+  cuisineType: Yup.string().required("Cuisine type is required"),
+  // Add validation rules for other fields
+});
 const CreateRestaurantForm = () => {
   const [uploadImage, setUploadImage] = useState(false);
   const dispatch =useDispatch()
   const jwt=localStorage.getItem("jwt");
   const formik = useFormik({
     initialValues,
+    validationSchema,
     onSubmit: (values) => {
       const data = {
         name: values.name,
