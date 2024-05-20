@@ -9,5 +9,7 @@ export const Routers = () => {
         <Route path='/admin/restaurants/*' element={<AdminRoute/>}></Route>
         <Route path='/*' element={<CustomerRoute/>}></Route>
     </Routes>
-)
+  )
 }
+
+export default Routers

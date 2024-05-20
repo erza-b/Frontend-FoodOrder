@@ -23,7 +23,7 @@ const initialValues = {
   twitter: "",
   instagram: "",
   openingHours: "Mon-Sun : 9:00 AM - 12:00 PM",
-  images: [],
+  images: []
 };
 
 const CreateRestaurantForm = () => {
@@ -84,8 +84,8 @@ const CreateRestaurantForm = () => {
       <Grid container spacing={2}>
       <Grid className="flex flex-wrap gap-5" item xs={12}>
         <input
-          accept="image/*"
-          id="fileInput"
+          accept='image/*'
+          id='fileInput'
           style={{ display: "none" }}
           onChange={handleImageChange}
           type="file"
@@ -95,11 +95,11 @@ const CreateRestaurantForm = () => {
           <span className="w-24 h-24 cursor-pointer flex items-center justify-center p-3 border rounded-md border-gray-600">
             <AddPhotoAlternateIcon className="text-white" />
           </span>
-          {uploadImage && (
+          {uploadImage && 
             <div className="absolute left-0 right-0 top-0 bottom-0 w-24 h-24 flex justify-center items-center">
               <CircularProgress />
             </div>
-          )}
+          }
         </label>
 
         <div className="flex flex-wrap gap-2">
@@ -107,6 +107,7 @@ const CreateRestaurantForm = () => {
             <div className="relative" key={index}>
               <img
                 className="w-24 h-24 object-cover"
+                key={index}
                 src={image}
                 alt=""
               />
@@ -136,8 +137,9 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.name}
-            />
-          </Grid>
+            >
+              </TextField>
+        </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -147,7 +149,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.description}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={6}>
             <TextField
@@ -158,7 +161,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.cuisineType}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={6}>
             <TextField
@@ -169,7 +173,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.openingHours}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -180,7 +185,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.streetAddress}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -191,7 +197,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.city}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={4}>
             <TextField
@@ -202,7 +209,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.stateProvince}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={4}>
             <TextField
@@ -213,7 +221,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.postalCode}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={4}>
             <TextField
@@ -224,7 +233,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.country}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={6}>
             <TextField
@@ -235,7 +245,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.email}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={6}>
             <TextField
@@ -246,7 +257,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.mobile}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={6}>
             <TextField
@@ -257,7 +269,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.twitter}
-            />
+            >
+              </TextField>
           </Grid>
           <Grid item xs={12} lg={6}>
             <TextField
@@ -268,7 +281,8 @@ const CreateRestaurantForm = () => {
               variant="outlined"
               onChange={formik.handleChange}
               value={formik.values.instagram}
-            />
+            >
+              </TextField>
           </Grid>
         </Grid>
         <Button variant="contained" color="primary" type="submit">

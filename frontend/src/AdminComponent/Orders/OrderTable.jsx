@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 const orders=[1,1,1,1,1,1,1]
-export const OrderTable = () => {
+export default function OrderTable() {
   return (
     <Box>
         <Card className='mt-1'>

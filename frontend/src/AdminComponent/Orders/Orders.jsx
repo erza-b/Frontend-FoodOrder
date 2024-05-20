@@ -1,7 +1,6 @@
-import { Label } from '@mui/icons-material';
 import { Card, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { OrderTable } from './OrderTable';
+import OrderTable from './OrderTable';
 
 const orderStatus=[
   {label:"Pending",value:"PENDING"},
@@ -40,5 +39,5 @@ export const Orders = () => {
       </Card>
       <OrderTable/>
     </div>
-  )
-}
+  );
+};

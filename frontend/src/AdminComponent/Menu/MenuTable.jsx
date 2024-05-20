@@ -74,8 +74,8 @@ export default function MenuTable() {
                                     <TableCell align="right">
                                         <IconButton color="primary" onClick={()=>handleDeleteFood(item.id)}>
                                             <Delete/>
-                                            </IconButton>
-                                            </TableCell>
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
