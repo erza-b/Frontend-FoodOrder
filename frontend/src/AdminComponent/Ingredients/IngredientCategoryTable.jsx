@@ -30,11 +30,11 @@ export default function IngredientCategoryTable() {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    if (restaurant?.usersRestaurant?.id) {
+    if (restaurant?.userRestaurant?.id) {
         console.log("Fetching ingredient categories...");
-        dispatch(getIngredientCategory({ id: restaurant.usersRestaurant.id, jwt }));
+        dispatch(getIngredientCategory({ id: restaurant.userRestaurant.id, jwt }));
     }
-}, [dispatch, jwt, restaurant?.usersRestaurant?.id]);
+}, [dispatch, jwt, restaurant?.userRestaurant?.id]);
 
   // Debugging: Check the categories data
   useEffect(() => {

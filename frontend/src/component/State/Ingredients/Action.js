@@ -33,41 +33,44 @@ export const getIngredientsOfRestaurant = ({ id, jwt }) => {
     };
 };
 
-export const createIngredient = ({ data, jwt }) => {
+export const createIngredient = ({ ingredientData, jwt }) => {
     return async (dispatch) => {
+        dispatch({ type: 'CREATE_INGREDIENT_REQUEST' });
         try {
-            const response = await api.post('/api/admin/ingredients/item', data, {
+            const response = await api.post('/api/admin/ingredients/item', ingredientData, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
+                    'Content-Type': 'application/json'
                 },
             });
-            console.log("create ingredients", response.data);
+            //console.log("create ingredients", response.data);
             dispatch({
-                type: CREATE_INGREDIENT_SUCCESS,
+                type: 'CREATE_INGREDIENT_SUCCESS',
                 payload: response.data,
             });
         } catch (error) {
-            console.log("error", error);
-            // Handle error, dispatch an error action, etc
+            console.error("Error creating ingredient: ", error.response ? error.response.data : error.message);
+            dispatch({ type: 'CREATE_INGREDIENT_FAILURE', payload: error.response ? error.response.data : error.message });
         }
     };
 };
 
 export const createIngredientCategory = ({ reqData, jwt }) => {
     return async (dispatch) => {
-        dispatch({ type: CREATE_INGREDIENT_CATEGORY_REQUEST });
+        dispatch({ type: 'CREATE_INGREDIENT_CATEGORY_REQUEST' }); 
 
         try {
-            const res = await axios.post(`/api/admin/ingredients/category`, reqData, {
+            const res = await api.post(`/api/admin/ingredients/category`, reqData, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
+                    'Content-Type': 'application/json'
                 },
             });
-            console.log("create category ", res.data);
-            dispatch({ type: CREATE_INGREDIENT_CATEGORY_SUCCESS, payload: res.data });
+            //console.log("create category ", res.data);
+            dispatch({ type: 'CREATE_INGREDIENT_CATEGORY_SUCCESS', payload: res.data });
         } catch (error) {
-            console.log("catch -", error);
-            dispatch({ type: CREATE_INGREDIENT_CATEGORY_FAILURE, payload: error });
+            console.log("catch -", error.res ? error.res.data : error.message);
+            dispatch({ type: 'CREATE_INGREDIENT_CATEGORY_FAILURE', payload: error.res ? error.res.data : error.message });
         }
     };
 };
@@ -75,7 +78,7 @@ export const createIngredientCategory = ({ reqData, jwt }) => {
 export const getIngredientCategory = ({ id, jwt }) => {
     return async (dispatch) => {
         try {
-            const response = await axios.get(`/api/admin/ingredients/restaurant/${id}/category`, {
+            const response = await api.get(`/api/admin/ingredients/restaurant/${id}/category`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
