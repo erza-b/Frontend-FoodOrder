@@ -46,7 +46,7 @@ const CreateRestaurantForm = () => {
         description: values.description,
         cuisineType: values.cuisineType,
         address: {
-          street: values.streetAddress,
+          street: values.street,
           city: values.city,
           postalCode: values.postalCode,
          
