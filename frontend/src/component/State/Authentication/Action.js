@@ -13,7 +13,8 @@ export const registerUser = (reqData) => async (dispatch) => {
             dispatch({ type: REGISTER_SUCCESS, payload: data.jwt }); 
         }
         if (data.role === "ROLE_RESTAURANT_OWNER") {
-            reqData.navigate("/admin/restaurants/");
+            alert("Success?Please log in....")
+            reqData.navigate("/account/login");
         } else {
             reqData.navigate("/");
         }
