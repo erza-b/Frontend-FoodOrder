@@ -89,9 +89,9 @@ const RestaurantDetails = () => {
             </Grid>
             <Grid item xs={12} lg={6}>
               <img
-                className="w-full h-[40vh] object-cover"
-                src="https://people.com/thmb/NM0j5XAALJXogOTrZuR1KtCUmz0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(329x0:331x2):format(webp)/most-view-4-660-5bd79e8274d84d79a5e1509f064f764c.jpg"
-                alt=""
+             className="w-full h-[40vh] object-cover"
+             src={restaurant.restaurant?.images[2]}
+             alt=""
               />
             </Grid>
           </Grid>
@@ -102,11 +102,11 @@ const RestaurantDetails = () => {
           <div className="space-y-3 mt-3">
             <p className="text-gray-500 flex items-center gap-3">
               <LocationOnIcon />
-              <span>Mumbai, Maharashtra</span>
+              <span>{restaurant.restaurant?.name}</span>
             </p>
             <p className="text-gray-500 flex items-center gap-3">
               <CalendarTodayIcon />
-              <span>Mon-Sun: 9:00AM-9:00PM (Today)</span>
+              <span>{restaurant.restaurant?.openingHours}</span>
             </p>
           </div>
         </div>

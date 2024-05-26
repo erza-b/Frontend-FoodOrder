@@ -10,7 +10,7 @@ export const registerUser = (reqData) => async (dispatch) => {
         const { data } = await axios.post(`${API_URL}/auth/signup`, reqData.userData);
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt);
-            dispatch({ type: REGISTER_SUCCESS, payload: data.jwt }); // Dispatch JWT token
+            dispatch({ type: REGISTER_SUCCESS, payload: data.jwt }); 
         }
         if (data.role === "ROLE_RESTAURANT_OWNER") {
             reqData.navigate("/admin/restaurants/");

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { createIngredientCategory } from '../../component/State/Ingredients/Action';
 import { useDispatch, useSelector } from 'react-redux';
+import { createIngredientCategory } from '../../component/State/Ingredients/Action';
 
 const CreateIngredientCategoryForm = () => {
     const dispatch = useDispatch();
@@ -14,16 +14,17 @@ const CreateIngredientCategoryForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.id) {
-            const data = { name: formData.name, restaurantId: restaurant.usersRestaurant.id };
-            dispatch(createIngredientCategory({ data, jwt }));
-        }
+        const reqData = { name: formData.name };
+        dispatch(createIngredientCategory({ reqData, jwt }));
+        // Reset the form after submission
+        setFormData({ name: "" });
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
-            ...formData, [name]: value
+            ...formData,
+            [name]: value
         });
     };
 
@@ -31,20 +32,23 @@ const CreateIngredientCategoryForm = () => {
         <div className=''>
             <div className='p-5'>
                 <h1 className='text-gray-400 text-center text-xl pb-10'>Create Ingredient Category</h1>
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                    <TextField
-                        fullWidth
-                        id="name"
-                        name="name"
-                        label="Category"
-                        variant="outlined"
-                        onChange={handleInputChange}
-                        value={formData.name}
-                    />
-                    <Button variant="contained" type="submit">
-                        Create Category
-                    </Button>
-                </form>
+                <div className="mx-auto" style={{ width: '400px' }}>
+                    {/* Place the form inside a div with mx-auto class to center it */}
+                    <form className="space-y-5" onSubmit={handleSubmit}>
+                        <TextField
+                            fullWidth
+                            id="name"
+                            name="name"
+                            label="Category"
+                            variant="outlined"
+                            onChange={handleInputChange}
+                            value={formData.name}
+                        />
+                        <Button variant="contained" type="submit">
+                            Create Category
+                        </Button>
+                    </form>
+                </div>
             </div>
         </div>
     );

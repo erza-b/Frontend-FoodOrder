@@ -9,32 +9,38 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createIngredient } from '../../component/State/Ingredients/Action';
 
 const CreateIngredientForm = () => {
-    const { restaurant, ingredients } = useSelector(store => store);
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
+    const { restaurant, ingredients } = useSelector(store => store);
     const [formData, setFormData] = useState({
         name: "",
         categoryId: ""
     });
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Form submitted");
         if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.id) {
             const data = {
                 ...formData,
                 restaurantId: restaurant.usersRestaurant.id
             };
+            console.log("Dispatching createIngredient with data:", data);
             dispatch(createIngredient({ data, jwt }));
+            setFormData({
+                name: "",
+                categoryId: ""
+            });
         }
     };
-
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
-            ...formData, [name]: value
+            ...formData,
+            [name]: value
         });
     };
-
+    
     return (
         <div className=''>
             <div className='p-5'>
@@ -71,6 +77,7 @@ const CreateIngredientForm = () => {
             </div>
         </div>
     );
+    
 };
 
 export default CreateIngredientForm;

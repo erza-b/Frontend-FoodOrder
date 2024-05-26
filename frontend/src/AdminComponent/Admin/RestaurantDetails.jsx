@@ -33,13 +33,13 @@ export const RestaurantDetails = () => {
 
         <div>
           <Button
-            color={!restaurant.userRestaurant?.open ? "primary" : "error"}
+            color={!restaurant?.userRestaurant?.open ? "primary" : "error"}
             className="py-[1rem] px-[2rem]"
             variant="contained"
             onClick={handleRestaurantStatus}
             size="large"
           >
-            {restaurant.userRestaurant?.open ? "close" : "open"}
+            {restaurant?.userRestaurant?.open ? "close" : "open"}
           </Button>
         </div>
       </div>
@@ -55,45 +55,10 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Owner</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {restaurant.userRestaurant?.owner.fullName}
+                    {restaurant?.userRestaurant?.owner?.fullName || ""}
                   </p>
                 </div>
-                <div className="flex">
-                  <p className="w-48">Restaurant Name</p>
-                  <p className="text-gray-400">
-                    <span className="pr-5">- </span>
-                    {restaurant.userRestaurant?.name}
-                  </p>
-                </div>
-                <div className="flex">
-                  <p className="w-48">Cuisine Type</p>
-                  <p className="text-gray-400">
-                    <span className="pr-5">- </span>
-                    {restaurant.userRestaurant?.cuisineType}
-                  </p>
-                </div>
-                <div className="flex">
-                  <p className="w-48">Opening Hours</p>
-                  <p className="text-gray-400">
-                    <span className="pr-5">- </span>
-                    {restaurant.userRestaurant?.openingHours}
-                  </p>
-                </div>
-                <div className="flex">
-                  <p className="w-48">Status</p>
-                  <p className="text-gray-400">
-                    <span className="pr-5">- </span>
-                    {restaurant.userRestaurant?.open ? (
-                      <span className="px-5 py-2 rounded-full bg-green-400 text-gray-950">
-                        Open
-                      </span>
-                    ) : (
-                      <span className="px-5 py-2 rounded-full bg-red-400 text-gray-50">
-                        Closed
-                      </span>
-                    )}
-                  </p>
-                </div>
+                {/* Other details */}
               </div>
             </CardContent>
           </Card>
