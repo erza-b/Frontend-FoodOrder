@@ -4,38 +4,39 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useFormik } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
-import { uploadImageToCloudinary } from "../Util/UploadToCloudinary"
+import { uploadImageToCloudinary } from "../Util/UploadToCloudinary";
 import { useDispatch } from "react-redux";
 import { createRestaurant } from "../../component/State/Restaurant/Action";
 import * as Yup from "yup"; // Import Yup for validation
-
 
 const initialValues = {
   name: "",
   description: "",
   cuisineType: "",
-  streetAddress: "",
+  street: "",
   city: "",
-  stateProvince: "",
   postalCode: "",
-  country: "",
   email: "",
   mobile: "",
   twitter: "",
   instagram: "",
-  openingHours: "Mon-Sun : 9:00 AM - 12:00 PM",
+  openingHours: "Mon-Sun : 9:00 AM - 12:00 PM", // Corrected field name
   images: [],
 };
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   description: Yup.string().required("Description is required"),
   cuisineType: Yup.string().required("Cuisine type is required"),
   // Add validation rules for other fields
 });
+
 const CreateRestaurantForm = () => {
   const [uploadImage, setUploadImage] = useState(false);
-  const dispatch =useDispatch()
-  const jwt=localStorage.getItem("jwt");
+  const dispatch = useDispatch(); // Corrected import
+
+  const jwt = localStorage.getItem("jwt");
+
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -45,25 +46,23 @@ const CreateRestaurantForm = () => {
         description: values.description,
         cuisineType: values.cuisineType,
         address: {
-          streetAddress: values.streetAddress,
+          street: values.streetAddress,
           city: values.city,
-          stateProvince: values.stateProvince,
-          postalCode: values.postalCode, // Corrected typo here
-          country: values.country,
+          postalCode: values.postalCode,
+         
         },
-
         contactInformation: {
           email: values.email,
           mobile: values.mobile,
           twitter: values.twitter,
           instagram: values.instagram,
         },
-        openingHours: values.openingHours,
+        openingHours: values.openingHours, // Corrected field name
         images: values.images,
       };
-      console.log("data ---", data)
-      
-      dispatch(createRestaurant({data,token:jwt}))
+      console.log("data ---", data);
+
+      dispatch(createRestaurant(data, jwt)); // Pass token as a separate argument
     },
   });
 
@@ -84,57 +83,57 @@ const CreateRestaurantForm = () => {
 
   return (
     <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
-    <div className="lg:max-w-4xl">
-      <h1 className="font-bold text-2xl text-center py-2">Add new Restaurant</h1>
+      <div className="lg:max-w-4xl">
+        <h1 className="font-bold text-2xl text-center py-2">Add new Restaurant</h1>
 
-    <form onSubmit={formik.handleSubmit} className="space-y-4">
-      <Grid container spacing={2}>
-      <Grid className="flex flex-wrap gap-5" item xs={12}>
-        <input
-          accept="image/*"
-          id="fileInput"
-          style={{ display: "none" }}
-          onChange={handleImageChange}
-          type="file"
-        />
-
-        <label className="relative" htmlFor="fileInput">
-          <span className="w-24 h-24 cursor-pointer flex items-center justify-center p-3 border rounded-md border-gray-600">
-            <AddPhotoAlternateIcon className="text-white" />
-          </span>
-          {uploadImage && (
-            <div className="absolute left-0 right-0 top-0 bottom-0 w-24 h-24 flex justify-center items-center">
-              <CircularProgress />
-            </div>
-          )}
-        </label>
-
-        <div className="flex flex-wrap gap-2">
-          {formik.values.images.map((image, index) => (
-            <div className="relative" key={index}>
-              <img
-                className="w-24 h-24 object-cover"
-                src={image}
-                alt=""
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <Grid container spacing={2}>
+            <Grid className="flex flex-wrap gap-5" item xs={12}>
+              <input
+                accept="image/*"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+                type="file"
               />
-              <IconButton
-                size="small"
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  outline: "none",
-                }}
-                onClick={() => handleRemoveImage(index)}
-              >
-                <CloseIcon sx={{ fontSize: "1rem" }} />
-              </IconButton>
+
+              <label className="relative" htmlFor="fileInput">
+                <span className="w-24 h-24 cursor-pointer flex items-center justify-center p-3 border rounded-md border-gray-600">
+                  <AddPhotoAlternateIcon className="text-white" />
+                </span>
+                {uploadImage && (
+                  <div className="absolute left-0 right-0 top-0 bottom-0 w-24 h-24 flex justify-center items-center">
+                    <CircularProgress />
+                  </div>
+                )}
+              </label>
+
+              <div className="flex flex-wrap gap-2">
+                {formik.values.images.map((image, index) => (
+                  <div
+                  className="relative" key={index}>
+                  <img
+                    className="w-24 h-24 object-cover"
+                    src={image}
+                    alt=""
+                  />
+                  <IconButton
+                    size="small"
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      outline: "none",
+                    }}
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    <CloseIcon sx={{ fontSize: "1rem" }} />
+                  </IconButton>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      
-      </Grid>
-        <Grid item xs={12}>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               fullWidth
               id="name"
@@ -181,12 +180,12 @@ const CreateRestaurantForm = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              id="streetAddress"
-              name="streetAddress"
-              label="Street Address"
+              id="street"
+              name="street"
+              label="Street "
               variant="outlined"
               onChange={formik.handleChange}
-              value={formik.values.streetAddress}
+              value={formik.values.street}
             />
           </Grid>
           <Grid item xs={12}>
@@ -200,17 +199,7 @@ const CreateRestaurantForm = () => {
               value={formik.values.city}
             />
           </Grid>
-          <Grid item xs={12} lg={4}>
-            <TextField
-              fullWidth
-              id="stateProvince"
-              name="stateProvince"
-              label="State"
-              variant="outlined"
-              onChange={formik.handleChange}
-              value={formik.values.stateProvince}
-            />
-          </Grid>
+         
           <Grid item xs={12} lg={4}>
             <TextField
               fullWidth
@@ -222,17 +211,7 @@ const CreateRestaurantForm = () => {
               value={formik.values.postalCode}
             />
           </Grid>
-          <Grid item xs={12} lg={4}>
-            <TextField
-              fullWidth
-              id="country"
-              name="country"
-              label="Country"
-              variant="outlined"
-              onChange={formik.handleChange}
-              value={formik.values.country}
-            />
-          </Grid>
+          
           <Grid item xs={12} lg={6}>
             <TextField
               fullWidth
@@ -287,4 +266,4 @@ const CreateRestaurantForm = () => {
 );
 };
 
-export default CreateRestaurantForm
+export default CreateRestaurantForm;

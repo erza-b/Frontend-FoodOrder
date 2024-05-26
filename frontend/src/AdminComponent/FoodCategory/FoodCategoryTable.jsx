@@ -1,23 +1,9 @@
-import { Box, Card, CardActions, CardHeader } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Box, Card, CardHeader, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import CreateIcon from '@mui/icons-material/Create';
-import IconButton from '@mui/material/IconButton';
-import { Delete } from '@mui/icons-material';
 import CreateFoodCategoryForm from './CreateFoodCategoryForm';
-import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRestaurantsCategory } from '../../component/State/Restaurant/Action';
-import { fetchRestaurantsOrder } from '../../component/State/Restaurant Order/Action';
-
-
-const orders = [1, 1, 1, 1, 1, 1, 1]
 
 const style = {
     position: 'absolute',
@@ -29,32 +15,38 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
-  
+};
+
 export default function FoodCategoryTable() {
-    const {restaurant} = useSelector((store)=>store);
-    const dispatch=useDispatch()
-  const jwt= localStorage.getItem("jwt");
-    const [open, setOpen] = React.useState(false);
+    const { restaurant } = useSelector((store) => store);
+    const dispatch = useDispatch();
+    const jwt = localStorage.getItem("jwt");
+    const [open, setOpen] = useState(false);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-   //console.log("Restaurant Details",restaurant)
 
-    useEffect(()=>{
-        dispatch(getRestaurantsCategory({jwt, restaurantId:restaurant.userRestaurant?.id,}));
-       
-  
-       
-  
-      },[])
+    useEffect(() => {
+        if (restaurant?.userRestaurant?.id) {
+            console.log('Fetching restaurant categories...');
+            dispatch(getRestaurantsCategory({ jwt, restaurantId: restaurant.userRestaurant.id }));
+        }
+    }, [dispatch, jwt, restaurant?.userRestaurant?.id]);
+
+    // Debugging: Check the categories data
+    useEffect(() => {
+        console.log('Restaurant Categories:', restaurant.categories);
+    }, [restaurant.categories]);
+
     return (
         <Box>
             <Card className='mt-1'>
-                <CardHeader action={
-                    <IconButton onClick ={handleOpen}aria-label="settings">
-                        <CreateIcon />
-                    </IconButton>
-                }
+                <CardHeader
+                    action={
+                        <IconButton onClick={handleOpen} aria-label="settings">
+                            <CreateIcon />
+                        </IconButton>
+                    }
                     title={"Food Category"}
                     sx={{ pt: 2, alignItems: "center" }}
                 />
@@ -69,11 +61,11 @@ export default function FoodCategoryTable() {
                         <TableBody>
                             {restaurant.categories.map((item) => (
                                 <TableRow
-                                    key={item.name}
+                                    key={item.id} // Ensure unique keys
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {1}
+                                        {item.id}
                                     </TableCell>
                                     <TableCell align="left">{item.name}</TableCell>
                                 </TableRow>
@@ -83,17 +75,16 @@ export default function FoodCategoryTable() {
                 </TableContainer>
             </Card>
 
-  <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box sx={style}>
-   <CreateFoodCategoryForm/>
-  </Box>
-</Modal>
-            
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <CreateFoodCategoryForm />
+                </Box>
+            </Modal>
         </Box>
-    )
+    );
 }
