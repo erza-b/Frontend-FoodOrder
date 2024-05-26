@@ -9,13 +9,12 @@ import { updateRestaurantStatus } from "../../component/State/Restaurant/Action"
 
 export const RestaurantDetails = () => {
   const { restaurant, address, contact } = useSelector((store) => store) || {}; // Provide default value as an empty object
-
   const dispatch = useDispatch();
   const handleRestaurantStatus = () => {
-    if (restaurant && restaurant.usersRestaurant) {
+    if (restaurant && restaurant.userRestaurant) {
       dispatch(
         updateRestaurantStatus({
-          restaurantId: restaurant.usersRestaurant.id,
+          restaurantId: restaurant.userRestaurant.id,
           jwt: localStorage.getItem("jwt"),
         })
       );
@@ -23,6 +22,7 @@ export const RestaurantDetails = () => {
       console.error("Restaurant or usersRestaurant is undefined or null");
     }
   };
+
 
   return (
     <div className="lg:px-20 px-5 pb-10">
@@ -33,14 +33,15 @@ export const RestaurantDetails = () => {
 
         <div>
           <Button
-            color={!restaurant?.userRestaurant?.open ? "primary" : "error"}
+            color={restaurant?.userRestaurant?.open ? "primary" : "secondary"}
             className="py-[1rem] px-[2rem]"
             variant="contained"
             onClick={handleRestaurantStatus}
             size="large"
           >
-            {restaurant?.userRestaurant?.open ? "close" : "open"}
+            {restaurant?.userRestaurant?.open ? "Close" : "Open"}
           </Button>
+
         </div>
       </div>
       <Grid container spacing={2}>
@@ -55,7 +56,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Owner</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {restaurant?.userRestaurant?.owner?.fullName || ""}
+                    {restaurant?.userRestaurant?.owner?.fullName || "Owner"}
                   </p>
                 </div>
                 {/* Other details */}
@@ -71,31 +72,25 @@ export const RestaurantDetails = () => {
             <CardContent>
               <div className="space-y-4 text-gray-200">
                 <div className="flex">
-                  <p className="w-48">County</p>
-                  <p className="text-gray-400">
-                    <span className="pr-5">- </span>
-                    {address ? address.county : ""}
-                  </p>
-                </div>
-                <div className="flex">
                   <p className="w-48">City</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {address ? address.city : ""}
+                    {restaurant?.userRestaurant?.address?.city || "City"}
+                    
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Postal Code</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {address ? address.postalCode : ""}
+                    {restaurant?.userRestaurant?.address?.postalCode || "Postal Code"}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Street Address</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {address ? address.streetAddress : ""}
+                    {restaurant?.userRestaurant?.address?.street || "Street Adress"}
                   </p>
                 </div>
               </div>
@@ -113,14 +108,14 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Email</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {contact ? contact.email : ""}
+                    {restaurant?.userRestaurant?.owner?.email ||  "Email"}
                   </p>
                 </div>
                 <div className="flex">
                   <p className="w-48">Mobile</p>
                   <p className="text-gray-400">
                     <span className="pr-5">- </span>
-                    {contact ? contact.mobile : ""}
+                    {restaurant?.userRestaurant?.owner?.mobile || "Mobile"}
                   </p>
                 </div>
                 <div className="flex">
