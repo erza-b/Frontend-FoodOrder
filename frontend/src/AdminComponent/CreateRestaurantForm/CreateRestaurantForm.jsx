@@ -20,6 +20,7 @@ const initialValues = {
   mobile: "",
   twitter: "",
   instagram: "",
+  open:1,
   openingHours: "Mon-Sun : 9:00 AM - 12:00 PM", // Corrected field name
   images: [],
 };
@@ -57,6 +58,7 @@ const CreateRestaurantForm = () => {
           twitter: values.twitter,
           instagram: values.instagram,
         },
+        open:1,
         openingHours: values.openingHours, // Corrected field name
         images: values.images,
       };
