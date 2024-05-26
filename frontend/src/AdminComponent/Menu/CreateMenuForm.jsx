@@ -11,7 +11,7 @@ import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { useDispatch, useSelector } from "react-redux";
 import { createMenuItem } from "../../component/State/Menu/Action";
 import { getIngredientsOfRestaurant } from "../../component/State/Ingredients/Action";
@@ -21,7 +21,7 @@ const initialValues = {
   description: "",
   price: "",
   category: "",
-  restaurantId: "",
+  restaurantId: "", // This should be populated with the actual restaurant ID
   vegetarian: true,
   seasonal: false,
   ingredients: [],
@@ -30,15 +30,28 @@ const initialValues = {
 
 const CreateMenuForm = () => {
   const dispatch = useDispatch();
-  const jwt=localStorage.getItem("jwt");
-  const{restaurant,ingredients} = useSelector((store)=>store);
+  const jwt = localStorage.getItem("jwt");
+  // Destructure restaurant and ingredients from the store, with initial empty objects
+  const { restaurant = {}, ingredients = {} } = useSelector((store) => store);
+
   const [uploadImage, setUploadImage] = useState(false);
+
+  useEffect(() => {
+    // Check if restaurant.usersRestaurant is available before accessing its properties
+    if (restaurant.usersRestaurant?.id) {
+      // Fetch ingredients of the restaurant
+      dispatch(getIngredientsOfRestaurant({ jwt, id: restaurant.usersRestaurant.id }));
+    }
+  }, [dispatch, jwt, restaurant.usersRestaurant?.id]);
+  
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
-      values.restaurantId = 2;
-     dispatch(createMenuItem({menu:values,jwt}))
-      console.log("data ---", values);
+      // Set the restaurant ID if available
+      if (restaurant.usersRestaurant?.id) {
+        values.restaurantId = restaurant.usersRestaurant.id;
+        dispatch(createMenuItem({ menu: values, jwt }));
+      }
     },
   });
 
@@ -46,7 +59,6 @@ const CreateMenuForm = () => {
     const file = e.target.files[0];
     setUploadImage(true);
     const image = await uploadImageToCloudinary(file);
-    console.log("image ---", image);
     formik.setFieldValue("images", [...formik.values.images, image]);
     setUploadImage(false);
   };
@@ -57,18 +69,10 @@ const CreateMenuForm = () => {
     formik.setFieldValue("images", updatedImages);
   };
 
-  useEffect(()=>{
-    dispatch(
- getIngredientsOfRestaurant({jwt,id:restaurant.userRestaurant.id})
-    );
-  },[]);
-
   return (
     <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
       <div className="lg:max-w-4xl">
-        <h1 className="font-bold text-2xl text-center py-2">
-          Add new Menu
-        </h1>
+        <h1 className="font-bold text-2xl text-center py-2">Add new Menu</h1>
 
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <Grid container spacing={2}>
@@ -150,7 +154,7 @@ const CreateMenuForm = () => {
               />
             </Grid>
             <Grid item xs={12} lg={6}>
-              <FormControl fullWidth>
+            <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Category</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -200,48 +204,49 @@ const CreateMenuForm = () => {
 
             <Grid item xs={12} lg={6}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Is Vegetarian
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="vegetarian"
-                  value={formik.values.vegetarian}
-                  label="Is Vegetarian"
-                  onChange={formik.handleChange}
-                  name="vegetarian"
-                >
-                  <MenuItem value={true}>Yes</MenuItem>
-                  <MenuItem value={false}>No</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} lg={6}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Is Seasional
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="seasional"
-                  value={formik.values.seasonal}
-                  label="Is Seasional"
-                  onChange={formik.handleChange}
-                  name="seasonal"
-                >
-                  <MenuItem value={true}>Yes</MenuItem>
-                  <MenuItem value={false}>No</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+                <InputLabel
+                id="demo-simple-select-label">
+                Is Vegetarian
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="vegetarian"
+                value={formik.values.vegetarian}
+                label="Is Vegetarian"
+                onChange={formik.handleChange}
+                name="vegetarian"
+              >
+                <MenuItem value={true}>Yes</MenuItem>
+                <MenuItem value={false}>No</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
-          <Button variant="contained" color="primary" type="submit">
-            Create Menu
-          </Button>
-        </form>
-      </div>
+          <Grid item xs={12} lg={6}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">
+                Is Seasonal
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="seasonal"
+                value={formik.values.seasonal}
+                label="Is Seasonal"
+                onChange={formik.handleChange}
+                name="seasonal"
+              >
+                <MenuItem value={true}>Yes</MenuItem>
+                <MenuItem value={false}>No</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Button variant="contained" color="primary" type="submit">
+          Create Menu
+        </Button>
+      </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default CreateMenuForm;

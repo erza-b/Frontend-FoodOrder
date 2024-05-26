@@ -33,7 +33,6 @@ export const getIngredientsOfRestaurant = ({ id, jwt }) => {
     };
 };
 
-
 export const createIngredient = ({ data, jwt }) => {
     return async (dispatch) => {
         try {
@@ -54,14 +53,12 @@ export const createIngredient = ({ data, jwt }) => {
     };
 };
 
-
-
 export const createIngredientCategory = ({ reqData, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: CREATE_INGREDIENT_CATEGORY_REQUEST });
 
         try {
-            const res = await api.post(`/api/admin/ingredients/category`, reqData, {
+            const res = await axios.post(`/api/admin/ingredients/category`, reqData, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
@@ -75,50 +72,49 @@ export const createIngredientCategory = ({ reqData, jwt }) => {
     };
 };
 
-
-export const getIngredientCategory =({id,jwt})=>{
-    return async (dispatch)=>{
-        try{
-            const response=await api.get(
-                './api/admin/ingredients/restaurant/${id}/category',
-                {
-                    headers:{
-                        Authorization:'Bearer ${jwt}',
-                    },
-                }
-            );
+export const getIngredientCategory = ({ id, jwt }) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`/api/admin/ingredients/restaurant/${id}/category`, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
             console.log("get ingredients category", response.data);
             dispatch({
-                type: CREATE_INGREDIENT_CATEGORY_SUCCESS,
+                type: GET_INGREDIENT_CATEGORY_SUCCESS,
                 payload: response.data,
             });
-        }catch(error){
-            console.log("error",error);
+        } catch (error) {
+            console.log("error", error);
+            dispatch({
+                type: GET_INGREDIENT_CATEGORY_FAILURE,
+                payload: error,
+            });
         }
     };
 };
 
-export const updateStockOfIngredient =({id,jwt}) =>{
-    return async(dispatch)=>{
-        try{
-            const{data}=await api.put(
-                '/api/admin/ingredients/${id}/stoke',
+export const updateStockOfIngredient = ({ id, jwt }) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await api.put(
+                `/api/admin/ingredients/${id}/stoke`,
                 {},
                 {
-                    headers:{
-                        Authorization:'Bearer ${jwt}',
+                    headers: {
+                        Authorization: `Bearer ${jwt}`,
                     },
                 }
             );
             dispatch({
-                type:UPDATE_STOCK,
-                payload:data,
-
+                type: UPDATE_STOCK,
+                payload: data,
             });
-            console.log("update ingredients stock",data);
-        }catch(error){
-            console.log("error",error);
-            //Handle error,dispatch an error action,, etc
-        } 
+            console.log("update ingredients stock", data);
+        } catch (error) {
+            console.log("error", error);
+            // Handle error, dispatch an error action, etc
+        }
     };
 };
