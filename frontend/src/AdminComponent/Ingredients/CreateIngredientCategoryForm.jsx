@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { createIngredientCategory } from '../../component/State/Ingredients/Action';
 
-const CreateIngredientCategoryForm = () => {
+const CreateIngredientCategoryForm = () => { 
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
     const { restaurant } = useSelector(store => store);
