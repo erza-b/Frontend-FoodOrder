@@ -46,25 +46,25 @@ export const loginUser = (reqData) => async (dispatch) => {
     }
 };
 
-export const getUser= (jwt)=>async(dispatch)=>{
-    
-    dispatch({type:GET_USER_REQUEST})
+export const getUser = (jwt) => {
+    return async (dispatch) => {
+        dispatch({ type: GET_USER_REQUEST });
+        try {
+            const response = await api.get(`/api/users/profile`, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                },
+            });
 
-    try{
-        const {data} =await api.get(`/api/users/profile`,{
-            headers:{
-                Authorization:`Bearer ${jwt}` 
-            }
-        })
-      
-        dispatch({type:GET_USER_SUCCESS,payload:data})
-        console.log("User profile",data)
-    }catch(error) {
-        dispatch({type:GET_USER_FAILURE,payload:error})
+            dispatch({ type: GET_USER_SUCCESS, payload: response.data });
+            console.log("User profile", response.data); // Corrected to access response.data
+        } catch (error) {
+            dispatch({ type: GET_USER_FAILURE, payload: error.message });
+            console.log("error", error);
+        }
+    };
+};
 
-        console.log("error",error)
-    }
-}
 
 export const addToFavorite=({jwt,restaurantId})=>async(dispatch)=>{
     

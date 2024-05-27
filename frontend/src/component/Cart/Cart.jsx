@@ -1,12 +1,12 @@
-import React from 'react'
-import { CartItem } from './CartItem'
-import { Box, Button, Card, Divider, Grid, Modal, TextField, FormHelperText } from '@mui/material'
-import { AddressCard } from './AddressCard'
+import React, { useState } from 'react';
+import { CartItem } from './CartItem';
+import { Box, Button, Card, Divider, Grid, Modal, TextField } from '@mui/material';
+import { AddressCard } from './AddressCard';
 import { AddLocation } from '@mui/icons-material';
-import { ErrorMessage, Formik, Field, Form } from "formik";
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../State/Order/Action';
-
 
 export const style = {
     position: 'absolute',
@@ -19,48 +19,61 @@ export const style = {
     boxShadow: 24,
     p: 4,
 };
-const initialValues={
-    streetAddress:"",
-    state:"",
-    pincode:'',
-    city:""
-}
-// const validationSchema=Yup.object.shape({
-//     streetAddress:Yup.string().required("Street address is required"),
-//     state: Yup.string().required("State is required"),
-//     pincode: Yup.required("Pincode is required"),
-//     city: Yup.string().required("City is required")
 
-// })
+const initialValues = {
+    streetAddress: "",
+    state: "",
+    pincode: '',
+    city: ""
+};
+
+const validationSchema = Yup.object().shape({
+    streetAddress: Yup.string().required("Street address is required"),
+    state: Yup.string().required("State is required"),
+    pincode: Yup.string().required("Pincode is required"),
+    city: Yup.string().required("City is required")
+});
 
 const Cart = () => {
-    const createOrderUsingSelectedAddress = () => {};
-    const handleOpenAddressModel = () => setOpen(true);
-    const [open, setOpen] = React.useState(false);
-    const { cart , auth } = useSelector(store => store);
+    const [open, setOpen] = useState(false);
+    const { cart, auth } = useSelector(store => store);
+    const [addresses, setAddresses] = useState([]); // Use local state for new addresses
+    const dispatch = useDispatch();
 
-    const dispatch=useDispatch();
-    // Check if cart is null before accessing its properties
     const total = cart.cart?.total || 0;
 
+    const handleOpenAddressModel = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     const handleSubmit = (values) => {
-        const data ={
-            jwt:localStorage.getItem("jwt"),
-            order:{
-                restaurantId:cart.cartItems[0].food?.restaurant.id,
-                deliveryAddress:{
-                    fullName:auth.user?.fullName,
-                    streetAddress:values.streetAddress,
-                    city:values.city,
-                    state:values.state,
-                    postalCode:values.pincode,
-                    country:"india"
-                }
-            }
+        const newAddress = {
+            fullName: auth.user?.fullName,
+            streetAddress: values.streetAddress,
+            city: values.city,
+            state: values.state,
+            postalCode: values.pincode,
+            country: "India"
+        };
+        setAddresses([...addresses, newAddress]);
+        handleClose();
+    };
+
+    const createOrderUsingSelectedAddress = (address) => {
+        const cartItems = cart.cartItems;
+
+        if (!cartItems || cartItems.length === 0 || !cartItems[0].food) {
+            console.error('Cart is empty or cart items are invalid');
+            return;
         }
-        dispatch(createOrder(data))
-        console.log("form value", values)
+
+        const data = {
+            jwt: localStorage.getItem("jwt"),
+            order: {
+                restaurantId: cartItems[0].food.restaurant.id,
+                deliveryAddress: address
+            }
+        };
+        dispatch(createOrder(data));
     };
 
     return (
@@ -76,10 +89,10 @@ const Cart = () => {
                         <div className='space-y-3'>
                             <div className='flex justify-between text-gray-400'>
                                 <p>Item Total</p>
-                                <p>{cart.cart?.total}</p>
+                                <p>{total}</p>
                             </div>
                             <div className='flex justify-between text-gray-400'>
-                                <p>Deliver Fee</p>
+                                <p>Delivery Fee</p>
                                 <p>3.00€</p>
                             </div>
                             <div className='flex justify-between text-gray-400'>
@@ -90,7 +103,7 @@ const Cart = () => {
                         </div>
                         <div className='flex justify-between text-gray-400'>
                             <p>Total pay</p>
-                            <p>{cart.cart?.total + 3 + 6}</p>
+                            <p>{total + 3 + 6}</p>
                         </div>
                     </div>
                 </section>
@@ -99,7 +112,7 @@ const Cart = () => {
                     <div>
                         <h1 className='text-center font-semibold text-2x1 py-10'>Choose Delivery Address</h1>
                         <div className='flex gap-5 flex-wrap justify-center'>
-                            {[1, 1, 1, 1, 1].map((item, index) => (
+                            {addresses.map((item, index) => (
                                 <AddressCard key={index} handleSelectAddress={createOrderUsingSelectedAddress} item={item} showButton={true} />
                             ))}
                             <Card className="flex gap-5 w-64 p-5">
@@ -122,10 +135,11 @@ const Cart = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Formik initialValues = {initialValues}
-                    //validationSchema = {validationSchema}
-                    onSubmit = {handleSubmit}>
-
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={handleSubmit}
+                    >
                         <Form>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -135,14 +149,8 @@ const Cart = () => {
                                         label="Street Address"
                                         fullWidth
                                         variant="outlined"
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg)=><span className="text-red-600">{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
+                                        helperText={<ErrorMessage name="streetAddress" />}
                                     />
-
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Field
@@ -151,14 +159,8 @@ const Cart = () => {
                                         label="State"
                                         fullWidth
                                         variant="outlined"
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg)=><span className="text-red-600">{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
+                                        helperText={<ErrorMessage name="state" />}
                                     />
-
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Field
@@ -167,14 +169,8 @@ const Cart = () => {
                                         label="City"
                                         fullWidth
                                         variant="outlined"
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg)=><span className="text-red-600">{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
+                                        helperText={<ErrorMessage name="city" />}
                                     />
-
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Field
@@ -183,17 +179,11 @@ const Cart = () => {
                                         label="Pincode"
                                         fullWidth
                                         variant="outlined"
-                                    // error={!ErrorMessage("streetAddress")}
-                                    // helperText={
-                                    //     <ErrorMessage>
-                                    //         {(msg)=><span className="text-red-600">{msg}</span>}
-                                    //     </ErrorMessage>
-                                    // }
+                                        helperText={<ErrorMessage name="pincode" />}
                                     />
-
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Button fullWidth variant="contained" type="submit" colo="primary">Deliver Here</Button>
+                                    <Button fullWidth variant="contained" type="submit" color="primary">Deliver Here</Button>
                                 </Grid>
                             </Grid>
                         </Form>
