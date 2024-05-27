@@ -9,10 +9,10 @@ export const AddressCard = ({ item, showButton, handleSelectAddress }) => {
             <div className='flex gap-3'>
                 <HomeIcon />
                 <div className='space-y-3 text-gray-500'>
-                    <h1 className='font-semibold text-lg text-white'>Home</h1>
-                    <p>Mumbai, new shivam building, gokuldham market, 530068, Maharastra, India</p>
+                    <h1 className='font-semibold text-lg text-white'>{item.fullName}</h1>
+                    <p>{item.streetAddress}, {item.city}, {item.state}, {item.postalCode}</p>
                     {showButton && (
-                        <Button variant="outlined" fullWidth onClick={() => handleSelectAddress(item)}>select</Button>
+                        <Button variant="outlined" fullWidth onClick={() => handleSelectAddress(item)}>Select</Button>
                     )}
                 </div>
             </div>
