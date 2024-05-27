@@ -42,7 +42,7 @@ const NoNotificationsMessage = styled.p`
 `;
 
 const NotificationDetailsCard = styled.div`
-  background-color: darkgray;
+  background-color: black;
   border-radius: 8px;
   padding: 20px;
   margin-top: 20px;
@@ -75,7 +75,7 @@ const NotificationPage = () => {
 
   // Simulated notifications
   const notifications = [
-    { id: 1, message: 'New order received', foodName: 'Pizza', imageURL: 'https://en.wikipedia.org/wiki/Pizza#/media/File:Pizza-3007395.jpg', order: { id: 12345, items: ['Pizza', 'Coke'], total: 20.00, customer: 'John Doe' } },
+    { id: 1, message: 'New order received', foodName: 'Pizza', imageURL: 'https://via.placeholder.com/150', order: { id: 12345, items: ['Pizza', 'Coke'], total: 20.00, customer: 'John Doe' } },
     { id: 2, message: 'Payment processed', order: { id: 12346, items: ['Burger', 'Fries'], total: 15.00, customer: 'Jane Smith' } },
     { id: 3, message: 'Item shipped', order: { id: 12347, items: ['Salad'], total: 10.00, customer: 'Mike Johnson' } },
     { id: 4, message: 'Delivery scheduled', order: { id: 12348, items: ['Sushi', 'Soda'], total: 25.00, customer: 'Emily Brown' } },
