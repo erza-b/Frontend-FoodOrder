@@ -1,3 +1,5 @@
+// IngredientReducer.js
+
 import {
     CREATE_INGREDIENT_CATEGORY_SUCCESS,
     CREATE_INGREDIENT_SUCCESS,
@@ -9,23 +11,23 @@ import {
 const initialState = {
     ingredients: [],
     update: null,
-    category: [], // Initialize category as an empty array
+    category: [],
 };
 
 export const ingredientReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_INGREDIENT_CATEGORY_SUCCESS:
-    return {
-        ...state,
-        category: action.payload,
-    };
+            return {
+                ...state,
+                category: action.payload,
+            };
 
         case GET_INGREDIENTS:
             return {
                 ...state,
                 ingredients: action.payload,
             };
-      
+
         case CREATE_INGREDIENT_CATEGORY_SUCCESS:
             return {
                 ...state,
