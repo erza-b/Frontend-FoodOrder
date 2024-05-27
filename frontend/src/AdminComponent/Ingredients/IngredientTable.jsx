@@ -1,9 +1,11 @@
+// IngredientTable Component:
+
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardActions, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Modal, IconButton } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredientsOfRestaurant, updateStockOfIngredient } from '../../component/State/Ingredients/Action';
-import CreateIngredientForm from './CreateIngredientForm';
+import { getIngredientsOfRestaurant, updateStockOfIngredient, createIngredient } from '../../component/State/Ingredients/Action'; // Import createIngredient action
+import CreateIngredientForm from './CreateIngredientForm'; // Import CreateIngredientForm component
 
 const style = {
     position: 'absolute',

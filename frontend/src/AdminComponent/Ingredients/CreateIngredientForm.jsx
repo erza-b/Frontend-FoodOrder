@@ -16,23 +16,23 @@ const CreateIngredientForm = () => {
         name: "",
         categoryId: ""
     });
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form submitted");
         if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.id) {
             const data = {
-                ...formData,
+                name: formData.name,
+                categoryId: formData.categoryId,
                 restaurantId: restaurant.usersRestaurant.id
             };
-            console.log("Dispatching createIngredient with data:", data);
-            dispatch(createIngredient({ data, jwt }));
+            dispatch(createIngredient({ ingredientData: data, jwt }));
             setFormData({
                 name: "",
                 categoryId: ""
             });
         }
     };
-    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -40,7 +40,7 @@ const CreateIngredientForm = () => {
             [name]: value
         });
     };
-    
+
     return (
         <div className=''>
             <div className='p-5'>
@@ -77,7 +77,6 @@ const CreateIngredientForm = () => {
             </div>
         </div>
     );
-    
 };
 
 export default CreateIngredientForm;
