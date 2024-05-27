@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -6,7 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { createIngredient } from '../../component/State/Ingredients/Action';
+import { createIngredient, getIngredientsOfRestaurant } from '../../component/State/Ingredients/Action';
 
 const CreateIngredientForm = () => {
     const dispatch = useDispatch();
@@ -17,29 +17,41 @@ const CreateIngredientForm = () => {
         categoryId: ""
     });
 
+      
+    useEffect(() => {
+        if (restaurant?.userRestaurant?.id) {
+            console.log("Fetching ingredient categories...");
+            dispatch(getIngredientsOfRestaurant({ id: restaurant.userRestaurant.id, jwt }));
+        }
+    }, [dispatch, jwt, restaurant?.userRestaurant?.id]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.id) {
-            const data = {
-                name: formData.name,
-                categoryId: formData.categoryId,
-                restaurantId: restaurant.usersRestaurant.id
-            };
-            dispatch(createIngredient({ ingredientData: data, jwt }));
-            setFormData({
-                name: "",
-                categoryId: ""
-            });
-        }
-    };
+        const data = {
+            name: formData.name,
+            categoryId: formData.categoryId,
+            restaurantId: restaurant.userRestaurant.id
+        };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        dispatch(createIngredient({ ingredientData: data, jwt }));
         setFormData({
-            ...formData,
-            [name]: value
+            name: "",
+            categoryId: ""
         });
     };
+
+   const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+        ...formData,
+        [name]: value
+    });
+};
+
+
+    if (!ingredients || !ingredients.category) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className=''>
@@ -65,7 +77,7 @@ const CreateIngredientForm = () => {
                             onChange={handleInputChange}
                             name="categoryId"
                         >
-                            {ingredients && ingredients.category && ingredients.category.map((item) => (
+                            {ingredients.category.map((item) => (
                                 <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                             ))}
                         </Select>

@@ -39,6 +39,7 @@ import {
   DELETE_RESTAURANT_FAILURE,
   DELETE_RESTAURANT_SUCCESS,
 } from "./ActionTypes";
+import { GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE, GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST, GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS } from "../Menu/ActionType";
 
 export const API_URL="http://localhost:5454"
 
@@ -82,17 +83,18 @@ export const getRestaurantById = (reqData) => {
 
 export const getRestaurantByUserId = (jwt) => {
     return async (dispatch) => {
-      dispatch({ type: GET_RESTAURANT_BY_USER_ID_REQUEST });
+      dispatch({ type:GET_RESTAURANT_BY_USER_ID_REQUEST });
       try {
+        console.log("Fetching restaurant by user ID with token:", jwt);
         const response = await api.get("/api/admin/restaurants/user", {
           headers: {
             Authorization: `Bearer ${jwt}`,
           },
         });
-        dispatch({ type: GET_RESTAURANT_BY_USER_ID_SUCCESS, payload: response.data });
+        dispatch({ type:GET_RESTAURANT_BY_USER_ID_SUCCESS, payload: response.data });
       } catch (error) {
-        console.error("Error fetching restaurant by user ID:", error);
-        dispatch({ type: GET_RESTAURANT_BY_USER_ID_FAILURE, payload: error.message });
+        console.error("Error fetching restaurant by user ID:", error.response ? error.response.data : error.message);
+        dispatch({ type:GET_RESTAURANT_BY_USER_ID_FAILURE, payload: error.message });
       }
     };
   };
@@ -295,6 +297,23 @@ export const getRestaurantsCategory = ({ jwt, restaurantId}) => {
         }catch(error){
             console.log("catch error: ",error);
             dispatch({type:GET_RESTAURANTS_CATEGORY_FAILURE,payload:error});
+        }
+    }
+}
+export const getRestaurantsMenu = ({ jwt, restaurantId}) => {
+    return async (dispatch) => {
+        dispatch({type: GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST});
+        try{
+            const res = await api.get(`/api/food/menu/${restaurantId}`,{
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
+            console.log("get restaurants category ",res.data);
+            dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS,payload:res.data});
+        }catch(error){
+            console.log("catch error: ",error);
+            dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE,payload:error});
         }
     }
 }

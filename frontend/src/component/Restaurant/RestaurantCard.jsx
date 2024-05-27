@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addToFavorite } from '../State/Authentication/Action';
 import { isPresentInFavorites } from '../config/logic';
+import { getRestaurantsMenu } from '../State/Restaurant/Action'; // Import the getRestaurantsMenu action
 
 const RestaurantCard = ({ item }) => {
     const navigate = useNavigate();
@@ -18,16 +19,17 @@ const RestaurantCard = ({ item }) => {
     }
 
     const handleNavigateToRestaurant = (city, name, id) => {
+        // Fetch the menu items when the user clicks on the restaurant card
+        dispatch(getRestaurantsMenu({ jwt, restaurantId: id }));
+
         navigate(`/restaurant/${city}/${name}/${id}`);
     }
-    
-    
 
     return (
         <div>
             <Card className={`${item.open ? 'cursor-pointer' : 'cursor-not-allowed'} w-[18rem]`}>
 
-                <div className='relative'>
+                <div className='relative' onClick={() => handleNavigateToRestaurant(item.address.city, item.name, item.id)}>
                     <img className='w-full h-[10rem] rounded-t-md object-cover' src={item.images[0]} alt="" />
                     <Chip
                         size="small"
@@ -38,7 +40,7 @@ const RestaurantCard = ({ item }) => {
                 </div>
                 <div className='p-4 textPart lg:flex w-full justify-between'>
                     <div className='space-y-1'>
-                        <p className='fonsemibold text-lg'  onClick={() => handleNavigateToRestaurant(item.address.city, item.name, item.id)}>{item.name}</p>
+                        <p className='fonsemibold text-lg'>{item.name}</p>
                         <p className='text-gray-500 text-sm'>
                             {item.description}
                         </p>
