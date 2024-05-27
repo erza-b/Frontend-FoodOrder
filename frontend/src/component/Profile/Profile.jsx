@@ -7,6 +7,7 @@ import Address from "./Address";
 import { Favorite } from "@mui/icons-material";
 import Favorites from "./Favorites";
 import Events from "./Events";
+import Notification from "./Notification";
 
 const Profile = () => {
 
@@ -24,6 +25,7 @@ const Profile = () => {
             <Route path='/favorites' element={<Favorites/>}/>
             <Route path='/orders' element={<Orders/>}/>
             <Route path='/events' element={<Events/>}/>
+            <Route path='/notification' element={<Notification/>}/> 
 
 
 

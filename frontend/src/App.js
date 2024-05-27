@@ -8,6 +8,7 @@ import RestaurantDetails from "./component/Restaurant/RestaurantDetails";
 import Cart from "./component/Cart/Cart";
 import Profile from "./component/Profile/Profile";
 import { CustomerRoute } from "./Routers/CustomerRoute";
+import Notification from './component/Profile/Notification'; 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./component/State/Authentication/Action"; // Import getUser action
