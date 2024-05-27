@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore, legacy_createStore } from "redux";
+import { applyMiddleware, combineReducers, legacy_createStore } from "redux";
 import { authReducer } from "./Authentication/Reducer";
 import { thunk } from "redux-thunk"; // Import thunk from redux-thunk
 import restaurantReducer from "./Restaurant/Reducer";
@@ -7,7 +7,7 @@ import cartReducer from "./Cart/Reducer";
 import { orderReducer } from "./Order/Reducer";
 import restaurantsOrderReducer from "./Restaurant Order/Reducer";
 import { ingredientReducer } from "./Ingredients/Reducer";
-import eventReducer from "./Event/Reducer";
+import eventReducer from './Event/Reducer'; // Correct import of eventReducer
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,8 +17,7 @@ const rootReducer = combineReducers({
   order: orderReducer,
   restaurantOrder: restaurantsOrderReducer,
   ingredients: ingredientReducer,
-  eventReducer:eventReducer
-
+  events: eventReducer, // Use eventReducer correctly
 });
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
