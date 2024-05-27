@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardActions, CardContent, CardHeader, Modal, Typography, Button } from '@mui/material';
+import { Box, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, IconButton, Modal, Paper, Typography } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import CreateEventForm from './CreateEventForm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,11 +10,44 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 600,
+    maxWidth: '90%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+};
+
+const EventCard = ({ event }) => {
+    return (
+        <Card sx={{ maxWidth: 345, marginBottom: 2 }}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    height="194"
+                    image={event.image} // Assuming image is provided in the event data
+                    alt={event.name}
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {event.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Location: {event.location}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Start Date: {event.startedAt}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        End Date: {event.endsAt}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                {/* You can add more actions here if needed */}
+            </CardActions>
+        </Card>
+    );
 };
 
 const EventTable = () => {
@@ -25,6 +58,7 @@ const EventTable = () => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { events, loading, error } = useSelector((state) => state.events);
 
     useEffect(() => {
         if (restaurant?.userRestaurant?.id) {
@@ -33,44 +67,36 @@ const EventTable = () => {
         }
     }, [dispatch, jwt, restaurant?.userRestaurant?.id]);
 
-    // Debugging: Check the events data
-    useEffect(() => {
-        console.log('Events:', restaurant.events);
-    }, [restaurant.events]);
-
     return (
         <Box>
             <Card className='mt-1'>
                 <CardHeader
                     action={
-                        <Button onClick={handleOpen} startIcon={<CreateIcon />} variant="outlined" size="small">
-                            Create Event
-                        </Button>
+                        <IconButton onClick={handleOpen} aria-label="settings">
+                            <CreateIcon />
+                        </IconButton>
                     }
                     title="Events"
                     sx={{ pt: 2, alignItems: "center" }}
                 />
-                <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-around" p={2}>
-                    {restaurant.events.map((event) => (
-                        <Card key={event.id} sx={{ maxWidth: 300, m: 2 }}>
-                            {/* Display the image if available */}
-                            {event.image && (
-                                <img src={event.image} alt="Event" style={{ width: '100%', height: 'auto' }} />
-                            )}
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {event.name}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    ID: {event.id}
-                                </Typography>
-                                {/* Add more event details here */}
-                            </CardContent>
-                            <CardActions>
-                                {/* Add action buttons if needed */}
-                            </CardActions>
-                        </Card>
-                    ))}
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', p: 2 }}>
+                    {loading ? (
+                        <Typography variant="body1" align="center">
+                            Loading...
+                        </Typography>
+                    ) : error ? (
+                        <Typography variant="body1" align="center">
+                            Error: {error.message}
+                        </Typography>
+                    ) : (events && events.length > 0) ? (
+                        events.map((event) => (
+                            <EventCard key={event.id} event={event} />
+                        ))
+                    ) : (
+                        <Typography variant="body1" align="center">
+                            No events found
+                        </Typography>
+                    )}
                 </Box>
             </Card>
 
@@ -80,7 +106,7 @@ const EventTable = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{ ...style, width: 400 }}>
+                <Box sx={style}>
                     <CreateEventForm />
                 </Box>
             </Modal>

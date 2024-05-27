@@ -1,4 +1,3 @@
-// Reducer.js
 import {
     CREATE_EVENTS_REQUEST,
     CREATE_EVENTS_SUCCESS,
@@ -32,9 +31,9 @@ const eventReducer = (state = initialState, action) => {
         case GET_EVENTS_SUCCESS:
             return {
                 ...state,
-                events: action.payload,
                 loading: false,
                 error: null,
+                events: action.payload,
             };
         case CREATE_EVENTS_FAILURE:
         case GET_EVENTS_FAILURE:
