@@ -1,7 +1,6 @@
-// IngredientTable Component:
-
+// IngredientTable.js
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardActions, CardHeader, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Modal, IconButton } from '@mui/material';
+import { Box, Card, CardHeader, Modal, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredientsOfRestaurant, updateStockOfIngredient, createIngredient } from '../../component/State/Ingredients/Action'; // Import createIngredient action
@@ -24,14 +23,16 @@ export default function IngredientTable() {
     const jwt = localStorage.getItem("jwt");
     const { restaurant, ingredients } = useSelector(store => store);
     const [open, setOpen] = useState(false);
+
+    // Fetch ingredients when component mounts or restaurant changes
+    useEffect(() => {
+        if (restaurant?.userRestaurant?.id) {
+            dispatch(getIngredientsOfRestaurant({ id: restaurant.userRestaurant.id, jwt }));
+        }
+    }, [dispatch, jwt, restaurant?.userRestaurant?.id]);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    useEffect(() => {
-        if (restaurant && restaurant.usersRestaurant && restaurant.usersRestaurant.id) {
-            dispatch(getIngredientsOfRestaurant({ id: restaurant.usersRestaurant.id, jwt }));
-        }
-    }, [restaurant]);
 
     return (
         <Box>
@@ -42,7 +43,7 @@ export default function IngredientTable() {
                             <CreateIcon />
                         </IconButton>
                     }
-                    title={"Ingredients"}
+                    title="Ingredients"
                     sx={{ pt: 2, alignItems: "center" }}
                 />
                 <TableContainer component={Paper}>
@@ -51,23 +52,17 @@ export default function IngredientTable() {
                             <TableRow>
                                 <TableCell align="left">Id</TableCell>
                                 <TableCell align="left">Name</TableCell>
-                                <TableCell align="left">Quantity</TableCell>
-                                <TableCell align="left">Category</TableCell>
-                                <TableCell align="left">Stock</TableCell>
-                                <TableCell align="left">Action</TableCell>
+                                <TableCell align="left">Category ID</TableCell> {/* Change label to "Category ID" */}
+                                
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {ingredients && ingredients.ingredients && ingredients.ingredients.map((ingredient) => (
-                                <TableRow key={ingredient.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableCell component="th" scope="row">{ingredient.id}</TableCell>
-                                    <TableCell align="left">{ingredient.name}</TableCell>
-                                    <TableCell align="left">{ingredient.quantity}</TableCell>
-                                    <TableCell align="left">{ingredient.ingredientCategory.name}</TableCell>
-                                    <TableCell align="left">{ingredient.stock}</TableCell>
-                                    <TableCell align="left">
-                                        <Button onClick={() => dispatch(updateStockOfIngredient({ id: ingredient.id, jwt }))}>Update Stock</Button>
-                                    </TableCell>
+                            {ingredients?.ingredients?.map((ingredient) => (
+                                <TableRow key={ingredient.id}>
+                                    <TableCell>{ingredient.id}</TableCell>
+                                    <TableCell>{ingredient.name}</TableCell>
+                                    <TableCell>{ingredient.category.id}</TableCell> {/* Display category ID */}
+                                
                                 </TableRow>
                             ))}
                         </TableBody>

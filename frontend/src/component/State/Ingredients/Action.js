@@ -6,13 +6,34 @@ import {
     CREATE_INGREDIENT_FAILURE,
     CREATE_INGREDIENT_REQUEST,
     CREATE_INGREDIENT_SUCCESS,
-    GET_INGREDIENTS,
     GET_INGREDIENT_CATEGORY_FAILURE,
     GET_INGREDIENT_CATEGORY_SUCCESS,
+    GET_INGREDIENT_FAILURE,
+    GET_INGREDIENT_SUCCESS,
     UPDATE_STOCK,
 } from './ActionType';
 import {  api } from '../../config/api';
 
+
+// export const getIngredientsOfRestaurant = ({ id, jwt }) => {
+//     return async (dispatch) => {
+//         try {
+//             const response = await api.get(`/api/admin/ingredients/restaurant/${id}`, {
+//                 headers: {
+//                     Authorization: `Bearer ${jwt}`,
+//                 },
+//             });
+//             console.log("get all ingredients", response.data);
+//             dispatch({
+//                 type: GET_INGREDIENTS,
+//                 payload: response.data,
+//             });
+//         } catch (error) {
+//             console.log("error", error);
+//             // Handle error, dispatch an error action, etc
+//         }
+//     };
+// };
 
 export const getIngredientsOfRestaurant = ({ id, jwt }) => {
     return async (dispatch) => {
@@ -22,14 +43,17 @@ export const getIngredientsOfRestaurant = ({ id, jwt }) => {
                     Authorization: `Bearer ${jwt}`,
                 },
             });
-            console.log("get all ingredients", response.data);
+            console.log("get ingredients", response.data);
             dispatch({
-                type: GET_INGREDIENTS,
+                type: GET_INGREDIENT_SUCCESS,
                 payload: response.data,
             });
         } catch (error) {
             console.log("error", error);
-            // Handle error, dispatch an error action, etc
+            dispatch({
+                type: GET_INGREDIENT_FAILURE,
+                payload: error,
+            });
         }
     };
 };
@@ -38,7 +62,7 @@ export const createIngredient = ({ ingredientData, jwt }) => {
     return async (dispatch) => {
         dispatch({ type: CREATE_INGREDIENT_REQUEST });
         try {
-            const response = await api.post('/api/admin/ingredients/item', ingredientData, {
+            const response = await api.post('/api/admin/ingredients', ingredientData, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                     'Content-Type': 'application/json'
@@ -98,6 +122,7 @@ export const getIngredientCategory = ({ id, jwt }) => {
         }
     };
 };
+
 
 export const updateStockOfIngredient = ({ id, jwt }) => {
     return async (dispatch) => {

@@ -14,7 +14,7 @@ import MenuCard from "./MenuCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getRestaurantById, getRestaurantsCategory } from "../State/Restaurant/Action";
-import { getMenuItemsByRestaurantId } from "../State/Menu/Action";
+import { getMenuItemsByRestaurantId } from "../State/Menu/Action"; // Import the getMenuItemsByRestaurantId action
 
 const foodTypes = [
   { label: "All", value: "all" },
@@ -24,7 +24,7 @@ const foodTypes = [
 ];
 
 const RestaurantDetails = () => {
-  const [foodType, setFoodType] = useState("all");
+  const [foodType, setFoodType] = useState(localStorage.getItem("foodType") || "all");
   const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,22 +35,17 @@ const RestaurantDetails = () => {
   useEffect(() => {
     dispatch(getRestaurantById({ jwt, restaurantId: id }));
     dispatch(getRestaurantsCategory({ jwt, restaurantId: id }));
-    dispatch(getMenuItemsByRestaurantId({jwt,restaurantId:id,vagetarian:false,
-      nonveg:false,seasonal:false,foodCategory:""}))
-  }, []);
+
+  }, [dispatch, id, jwt]); // Include dispatch, id, and jwt in the dependency array
 
   useEffect(() => {
-    dispatch(
-      getMenuItemsByRestaurantId({
-        jwt,
-        restaurantId: id,
-        vegetarian: foodType === "vegetarian",
-        nonveg: foodType === "non_vegetarian",
-        seasonal: foodType === "seasonal",
-        foodCategory: selectedCategory,
-      })
-    );
-  }, [selectedCategory, foodType, dispatch, id, jwt]);
+    dispatch(getMenuItemsByRestaurantId({ jwt, restaurantId: id }));
+
+  }, [dispatch, id, jwt]);
+
+  useEffect(() => {
+    localStorage.setItem("foodType", foodType);
+  }, [foodType]);
 
   const handleFilter = (e) => {
     setFoodType(e.target.value);
@@ -60,7 +55,6 @@ const RestaurantDetails = () => {
     setSelectedCategory(e.target.value);
   };
 
-  
   useEffect(() => {
     if (restaurant.categories) {
       console.log("Categories:", restaurant.categories);
@@ -89,9 +83,9 @@ const RestaurantDetails = () => {
             </Grid>
             <Grid item xs={12} lg={6}>
               <img
-             className="w-full h-[40vh] object-cover"
-             src={restaurant.restaurant?.images[2]}
-             alt=""
+                className="w-full h-[40vh] object-cover"
+                src={restaurant.restaurant?.images[2]}
+                alt=""
               />
             </Grid>
           </Grid>
@@ -144,7 +138,7 @@ const RestaurantDetails = () => {
                   value={selectedCategory}
                 >
                   {restaurant.categories
-                    ?.filter((item, index, self) => 
+                    ?.filter((item, index, self) =>
                       index === self.findIndex((t) => t.name === item.name))
                     .map((item, index) => (
                       <FormControlLabel
@@ -160,7 +154,7 @@ const RestaurantDetails = () => {
           </div>
         </div>
         <div className="space-y-5 lg:w-[80%] lg:pl-10">
-          {menu.menuItems.map((item)=> <MenuCard item={item}/>)}
+          {menu.menuItems.map((item) => <MenuCard item={item} key={item.id} />)}
         </div>
       </section>
     </div>
